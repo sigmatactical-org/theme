@@ -60,7 +60,7 @@ sigma-theme = { git = "ssh://git@github.com/sigmatactical-org/sigma-theme.git" }
 Local monorepo checkout:
 
 ```toml
-sigma-theme = { path = "../sigma-theme" }
+sigma-theme = { path = "../theme" }
 ```
 
 Repository: https://github.com/sigmatactical-org/sigma-theme
