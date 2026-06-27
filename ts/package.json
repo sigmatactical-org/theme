@@ -1,0 +1,14 @@
+{
+  "name": "sigma-theme-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:dial",
+    "build:dial": "esbuild src/index.ts --bundle --outfile=../assets/static/js/sigma-dial.js --platform=browser --target=es2022",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.3"
+  }
+}

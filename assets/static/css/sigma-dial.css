@@ -1,0 +1,87 @@
+/* Sigma Tactical Group animated dial (background). */
+
+:root {
+  --sigma-brass: #c9a962;
+  --sigma-ink: #0d1117;
+  --sigma-ink-2: #21262d;
+  --sigma-ink-3: #30363d;
+  --sigma-ink-4: #484f58;
+  --sigma-mono:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+}
+
+.hero-shell {
+  position: relative;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: min(70vh, 640px);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0.6;
+  mask-image: radial-gradient(circle at center, black 32%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at center, black 32%, transparent 72%);
+}
+
+.sigma-dial {
+  width: min(120vh, 900px);
+  height: min(120vh, 900px);
+  max-width: 95vw;
+  animation: sigma-dial-drift 240s linear infinite;
+}
+
+.sigma-sight {
+  transform-origin: center;
+  animation: sigma-sight-sweep 90s ease-in-out infinite alternate;
+}
+
+@keyframes sigma-dial-drift {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes sigma-sight-sweep {
+  0% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+.hero-content-layer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+@media (max-width: 576px) {
+  .sigma-dial {
+    width: min(100vw, 520px);
+    height: min(100vw, 520px);
+  }
+}
+
+/* Respect users who ask for less motion: hold the dial and sight still. */
+@media (prefers-reduced-motion: reduce) {
+  .sigma-dial,
+  .sigma-sight {
+    animation: none;
+  }
+}
