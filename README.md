@@ -68,3 +68,7 @@ Repository: https://github.com/sigmatactical-org/sigma-theme
 ## Workspace
 
 This crate also lives in the `sigma/` Cargo workspace alongside `identity` and `sigmatacticalgroup.com` for local development.
+
+## License
+
+Licensed **MIT OR Apache-2.0** (see `LICENSE-MIT` and `LICENSE-APACHE` in this directory).
