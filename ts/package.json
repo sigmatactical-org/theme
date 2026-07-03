@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:dial",
+    "build": "npm run build:dial && npm run build:password-toggle && npm run build:register-success",
     "build:dial": "esbuild src/index.ts --bundle --outfile=../assets/static/js/sigma-dial.js --platform=browser --target=es2022",
+    "build:password-toggle": "esbuild src/password-toggle.ts --bundle --outfile=../assets/static/js/password-toggle.js --platform=browser --target=es2022",
+    "build:register-success": "esbuild src/register-success.ts --bundle --outfile=../assets/static/js/register-success.js --platform=browser --target=es2022",
     "check": "tsc --noEmit"
   },
   "devDependencies": {

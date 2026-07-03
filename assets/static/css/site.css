@@ -182,3 +182,176 @@ main.home-main .page-foreground {
   color: var(--bs-emphasis-color);
   margin-bottom: 0.75rem;
 }
+
+/* Identity app pages (/register, /exampleapp) — external CSS only (CSP blocks inline). */
+main.app-main {
+  padding: 2rem 0 3rem;
+}
+
+main.app-main .hero-bg {
+  opacity: 0.35;
+}
+
+.register-card {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background: rgba(22, 27, 34, 0.92);
+  border: 1px solid var(--bs-border-color);
+}
+
+.register-card h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.register-card .lead {
+  color: var(--bs-secondary-color);
+  margin-bottom: 1.25rem;
+}
+
+.register-success-card {
+  text-align: center;
+}
+
+.register-success-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.12);
+  border: 1px solid rgba(63, 185, 80, 0.35);
+}
+
+.register-success-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.register-success-countdown {
+  color: var(--bs-secondary-color);
+  margin-bottom: 1.25rem;
+}
+
+.app-demo {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: rgba(22, 27, 34, 0.92);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+}
+
+.app-demo h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--bs-emphasis-color);
+  margin-bottom: 1rem;
+}
+
+.app-demo .status-line {
+  font-size: 0.95rem;
+  color: var(--bs-body-color);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.app-demo .status-line code {
+  color: var(--bs-emphasis-color);
+}
+
+.app-demo .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-demo .echo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app-demo textarea {
+  width: 100%;
+  min-height: 12rem;
+  background: #0d1117;
+  color: var(--bs-body-color);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+.app-demo .echo-col {
+  flex: 1;
+  min-width: 16rem;
+}
+
+.app-demo #echoresponse {
+  flex: 1;
+  min-width: 16rem;
+  min-height: 12rem;
+  overflow: auto;
+  background: #0d1117;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.password-toggle-group {
+  position: relative;
+}
+
+.password-toggle-group .form-control {
+  padding-right: 3rem;
+}
+
+.password-toggle-group .password-toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: rgba(240, 246, 252, 0.55);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.password-toggle-group .password-toggle-btn:hover,
+.password-toggle-group .password-toggle-btn:focus {
+  color: rgba(240, 246, 252, 0.82);
+  background: rgba(240, 246, 252, 0.06);
+  outline: none;
+}
+
+.password-toggle-group .password-toggle-btn:focus-visible {
+  box-shadow: 0 0 0 0.15rem rgba(240, 246, 252, 0.18);
+}
+
+.password-toggle-group .password-toggle-btn[aria-pressed="true"] {
+  color: rgba(240, 246, 252, 0.72);
+}
+
+.password-toggle-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: block;
+}
