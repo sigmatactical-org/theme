@@ -355,3 +355,256 @@ main.app-main .hero-bg {
   height: 1.35rem;
   display: block;
 }
+
+.store-nav-welcome {
+  letter-spacing: 0.01em;
+  opacity: 0.92;
+}
+
+/* SIGMA-RACER product page — tabbed build specifications */
+
+.product-page .product-back {
+  color: var(--bs-secondary-color);
+}
+
+.product-page .product-back:hover {
+  color: var(--bs-emphasis-color);
+}
+
+.product-page .product-title {
+  font-family: "Operation Napalm", system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+.product-page .product-sku {
+  color: var(--bs-secondary-color);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.25rem;
+}
+
+.product-page .product-lead {
+  color: var(--bs-body-color);
+  max-width: 42rem;
+}
+
+.product-page .product-card {
+  background: rgba(22, 27, 34, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+}
+
+.racer-specs {
+  margin-top: 2.5rem;
+}
+
+.racer-specs__header {
+  margin-bottom: 1.25rem;
+}
+
+.racer-specs__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--bs-emphasis-color);
+  margin-bottom: 0.35rem;
+}
+
+.racer-specs__subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+}
+
+.racer-specs__chrome {
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.75rem;
+  background: rgba(13, 17, 23, 0.42);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.22);
+}
+
+.racer-specs__input {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.racer-specs__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.racer-specs__tab {
+  margin: 0;
+  padding: 0.45rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.racer-specs__tab:hover {
+  color: var(--bs-emphasis-color);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+#racer-spec-chassis:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-chassis"],
+#racer-spec-electronics:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-electronics"],
+#racer-spec-emissions:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-emissions"] {
+  color: var(--bs-emphasis-color);
+  background: rgba(88, 166, 255, 0.1);
+  border-color: rgba(88, 166, 255, 0.35);
+}
+
+.racer-specs__panel {
+  display: none;
+  animation: racer-spec-fade 0.2s ease;
+}
+
+#racer-spec-chassis:checked ~ .racer-specs__panels .racer-specs__panel--chassis,
+#racer-spec-electronics:checked ~ .racer-specs__panels .racer-specs__panel--electronics,
+#racer-spec-emissions:checked ~ .racer-specs__panels .racer-specs__panel--emissions {
+  display: block;
+}
+
+@keyframes racer-spec-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.racer-specs__markdown {
+  font-size: 0.925rem;
+  line-height: 1.6;
+}
+
+.racer-specs__markdown h1 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--bs-emphasis-color);
+}
+
+.racer-specs__markdown h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--bs-emphasis-color);
+}
+
+.racer-specs__markdown h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--bs-emphasis-color);
+}
+
+.racer-specs__markdown p,
+.racer-specs__markdown li {
+  color: var(--bs-secondary-color);
+}
+
+.racer-specs__markdown em {
+  color: rgba(201, 209, 217, 0.85);
+}
+
+.racer-specs__markdown blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid rgba(88, 166, 255, 0.35);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--bs-secondary-color);
+  border-radius: 0 0.35rem 0.35rem 0;
+}
+
+.racer-specs__markdown hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 1.75rem 0;
+}
+
+.racer-specs__markdown table {
+  width: 100%;
+  margin: 1rem 0 1.25rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+  font-size: 0.875rem;
+}
+
+.racer-specs__markdown thead th {
+  font-weight: 600;
+  color: var(--bs-emphasis-color);
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.racer-specs__markdown th,
+.racer-specs__markdown td {
+  padding: 0.6rem 0.75rem;
+  vertical-align: top;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.racer-specs__markdown tbody tr:last-child th,
+.racer-specs__markdown tbody tr:last-child td {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.racer-specs__markdown tbody tr:hover td,
+.racer-specs__markdown tbody tr:hover th {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.racer-specs__markdown code {
+  font-size: 0.8em;
+  color: rgba(201, 209, 217, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+
+@media (max-width: 575.98px) {
+  .racer-specs__chrome {
+    padding: 1rem;
+  }
+
+  .racer-specs__tabs {
+    gap: 0.35rem;
+  }
+
+  .racer-specs__tab {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .racer-specs__markdown {
+    overflow-x: auto;
+  }
+
+  .racer-specs__markdown table {
+    min-width: 28rem;
+  }
+}
