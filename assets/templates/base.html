@@ -15,11 +15,14 @@
 
   <body>
     <nav class="navbar navbar-expand">
-      <div class="container">
+      <div class="container d-flex align-items-center">
         <a class="navbar-brand" href="/">
           <img src="/static/sigma-favicon-32.png" alt="" />
           <span class="brand-wordmark">{% block brand %}Sigma Tactical Group{% endblock %}</span>
         </a>
+        <div class="ms-auto">
+          {% block nav_actions %}{% endblock %}
+        </div>
       </div>
     </nav>
 

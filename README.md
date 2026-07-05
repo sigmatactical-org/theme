@@ -6,6 +6,8 @@ Used by:
 
 - `sigmatacticalgroup.com` (warp)
 - `identity` (axum)
+- `store`, `catalog`, `cart`, `contact`, `accounting`, `info` (Askama + static assets)
+- Keycloak login (CSS/JS/fonts under `assets/keycloak/`, synced to platform)
 
 ## Layout
 
@@ -13,6 +15,7 @@ Used by:
 assets/
   static/       CSS, JS, fonts, icons (embedded at compile time)
   templates/    Askama base + pages (index, 404, 500)
+  keycloak/     Keycloak login theme (sigma branding)
 ts/             TypeScript sources (authoritative)
 assets/static/js/  esbuild output (gitignored; build before cargo)
 src/
@@ -21,6 +24,21 @@ src/
   axum.rs       router() — GET /, /static/*, /favicon.ico
   warp.rs       routes() — full warp filter stack
 ```
+
+Rust apps extend `assets/templates/base.html` and load `/static/css/site.css`.
+Override `{% block nav_actions %}` in the navbar when an app needs auth controls
+(store).
+
+## Keycloak login theme
+
+Source: `assets/keycloak/sigma/login/`. Sync into platform manifests after edits:
+
+```bash
+./scripts/sync-keycloak-theme.sh
+```
+
+Identity devcontainer mounts this directory into Keycloak at
+`/opt/keycloak/themes/sigma/login`.
 
 ## Frontend (TypeScript)
 

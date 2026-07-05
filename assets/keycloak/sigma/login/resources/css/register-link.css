@@ -1,0 +1,15 @@
+.sigma-register-link {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.sigma-register-link a {
+  color: var(--sigma-link, #58a6ff);
+  text-decoration: none;
+}
+
+.sigma-register-link a:hover {
+  color: var(--sigma-link-hover, #79c0ff);
+  text-decoration: underline;
+}

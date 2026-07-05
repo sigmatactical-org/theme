@@ -1,15 +1,8 @@
-type AuthStatus = {
-  authenticated: boolean;
-  username?: string;
-};
-
-function requireElement<T extends HTMLElement>(id: string): T {
-  const element = document.getElementById(id);
-  if (!element) {
-    throw new Error(`missing element #${id}`);
-  }
-  return element as T;
-}
+import {
+  type AuthStatus,
+  identityStatusUrlFromBase,
+  requireElement,
+} from "./store-auth";
 
 function setSignedIn(signedIn: boolean, username?: string): void {
   const signedOut = requireElement<HTMLElement>("store-nav-signed-out");
@@ -17,12 +10,22 @@ function setSignedIn(signedIn: boolean, username?: string): void {
   const welcome = requireElement<HTMLElement>("store-nav-welcome");
   signedOut.classList.toggle("d-none", signedIn);
   signedInEl.classList.toggle("d-none", !signedIn);
+  welcome.replaceChildren();
   if (signedIn && username) {
-    welcome.textContent = `Welcome, ${username}`;
+    const editProfileUrl =
+      document.getElementById("store-nav-auth")?.dataset.editProfileUrl;
+    welcome.append("Welcome, ");
+    if (editProfileUrl) {
+      const link = document.createElement("a");
+      link.href = editProfileUrl;
+      link.className = "store-nav-profile-link text-light text-decoration-underline";
+      link.textContent = username;
+      welcome.append(link);
+    } else {
+      welcome.append(username);
+    }
   } else if (signedIn) {
     welcome.textContent = "Welcome";
-  } else {
-    welcome.textContent = "";
   }
 }
 
@@ -31,7 +34,7 @@ function identityStatusUrl(): string {
   if (!root) {
     throw new Error("missing data-identity-base");
   }
-  return new URL("auth/status", root).toString();
+  return identityStatusUrlFromBase(root);
 }
 
 async function pollAuthStatus(): Promise<void> {

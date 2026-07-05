@@ -22,6 +22,101 @@
   --bs-link-hover-color: #79c0ff;
   --bs-link-hover-color-rgb: 121, 192, 255;
   --bs-secondary-color: #8b949e;
+  /* Primary actions: neutral grey (not Bootstrap blue). */
+  --bs-primary: #484f58;
+  --bs-primary-rgb: 72, 79, 88;
+  --bs-primary-text-emphasis: #f0f6fc;
+  --bs-primary-bg-subtle: #21262d;
+  --bs-primary-border-subtle: #30363d;
+}
+
+/* Beat Bootstrap's `[data-bs-theme=dark]` blue primary tokens and paint buttons grey. */
+html[data-bs-theme="dark"] .btn-primary,
+html[data-bs-theme="dark"] .btn-primary:hover,
+html[data-bs-theme="dark"] .btn-primary:focus,
+html[data-bs-theme="dark"] .btn-primary:active,
+html[data-bs-theme="dark"] .btn-primary.active,
+html[data-bs-theme="dark"] .btn-primary:disabled,
+html[data-bs-theme="dark"] .btn-primary.disabled {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-bg: #30363d;
+  --bs-btn-border-color: #484f58;
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-hover-bg: #484f58;
+  --bs-btn-hover-border-color: #6e7681;
+  --bs-btn-focus-shadow-rgb: 72, 79, 88;
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-active-bg: #484f58;
+  --bs-btn-active-border-color: #6e7681;
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-bg: #21262d;
+  --bs-btn-disabled-border-color: #30363d;
+  color: var(--bs-emphasis-color);
+  background-color: #30363d;
+  border-color: #484f58;
+  box-shadow: none;
+}
+
+html[data-bs-theme="dark"] .btn-primary:hover,
+html[data-bs-theme="dark"] .btn-primary:focus-visible {
+  color: var(--bs-emphasis-color);
+  background-color: #484f58;
+  border-color: #6e7681;
+}
+
+html[data-bs-theme="dark"] .btn-outline-primary,
+html[data-bs-theme="dark"] .btn-outline-primary:hover,
+html[data-bs-theme="dark"] .btn-outline-primary:focus,
+html[data-bs-theme="dark"] .btn-outline-primary:active {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-border-color: #484f58;
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-hover-bg: #30363d;
+  --bs-btn-hover-border-color: #6e7681;
+  --bs-btn-focus-shadow-rgb: 72, 79, 88;
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-active-bg: #484f58;
+  --bs-btn-active-border-color: #6e7681;
+  color: var(--bs-emphasis-color);
+  background-color: transparent;
+  border-color: #484f58;
+}
+
+html[data-bs-theme="dark"] .btn-outline-primary:hover,
+html[data-bs-theme="dark"] .btn-outline-primary:focus-visible {
+  color: var(--bs-emphasis-color);
+  background-color: #30363d;
+  border-color: #6e7681;
+}
+
+.btn-primary {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-bg: #30363d;
+  --bs-btn-border-color: #484f58;
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-hover-bg: #484f58;
+  --bs-btn-hover-border-color: #6e7681;
+  --bs-btn-focus-shadow-rgb: 72, 79, 88;
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-active-bg: #484f58;
+  --bs-btn-active-border-color: #6e7681;
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-bg: #21262d;
+  --bs-btn-disabled-border-color: #30363d;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--bs-emphasis-color);
+  --bs-btn-border-color: #484f58;
+  --bs-btn-hover-color: var(--bs-emphasis-color);
+  --bs-btn-hover-bg: #30363d;
+  --bs-btn-hover-border-color: #6e7681;
+  --bs-btn-focus-shadow-rgb: 72, 79, 88;
+  --bs-btn-active-color: var(--bs-emphasis-color);
+  --bs-btn-active-bg: #484f58;
+  --bs-btn-active-border-color: #6e7681;
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-border-color: #30363d;
 }
 
 html,
@@ -395,6 +490,14 @@ main.app-main .hero-bg {
   backdrop-filter: blur(6px);
 }
 
+.product-page .product-order-summary dt {
+  font-size: 0.875rem;
+}
+
+.product-page .product-order-status {
+  font-size: 0.9rem;
+}
+
 .racer-specs {
   margin-top: 2.5rem;
 }
@@ -464,21 +567,33 @@ main.app-main .hero-bg {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.racer-specs__panel {
+  display: none;
+  animation: racer-spec-fade 0.2s ease;
+}
+
+#racer-spec-overview:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-overview"],
+#racer-spec-build:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-build"],
+#racer-spec-engine:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-engine"],
 #racer-spec-chassis:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-chassis"],
+#racer-spec-bodywork:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-bodywork"],
+#racer-spec-electrical:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-electrical"],
 #racer-spec-electronics:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-electronics"],
+#racer-spec-efi:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-efi"],
 #racer-spec-emissions:checked ~ .racer-specs__tabs .racer-specs__tab[for="racer-spec-emissions"] {
   color: var(--bs-emphasis-color);
   background: rgba(88, 166, 255, 0.1);
   border-color: rgba(88, 166, 255, 0.35);
 }
 
-.racer-specs__panel {
-  display: none;
-  animation: racer-spec-fade 0.2s ease;
-}
-
+#racer-spec-overview:checked ~ .racer-specs__panels .racer-specs__panel--overview,
+#racer-spec-build:checked ~ .racer-specs__panels .racer-specs__panel--build,
+#racer-spec-engine:checked ~ .racer-specs__panels .racer-specs__panel--engine,
 #racer-spec-chassis:checked ~ .racer-specs__panels .racer-specs__panel--chassis,
+#racer-spec-bodywork:checked ~ .racer-specs__panels .racer-specs__panel--bodywork,
+#racer-spec-electrical:checked ~ .racer-specs__panels .racer-specs__panel--electrical,
 #racer-spec-electronics:checked ~ .racer-specs__panels .racer-specs__panel--electronics,
+#racer-spec-efi:checked ~ .racer-specs__panels .racer-specs__panel--efi,
 #racer-spec-emissions:checked ~ .racer-specs__panels .racer-specs__panel--emissions {
   display: block;
 }

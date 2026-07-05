@@ -1,0 +1,181 @@
+/* Sigma Tactical Group — Keycloak login theme (mirrors sigma-theme site.css tokens). */
+
+@font-face {
+  font-family: "Operation Napalm";
+  src: url("../fonts/operation-napalm-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root,
+.pf-v5-theme-dark {
+  --sigma-body-bg: #0d1117;
+  --sigma-body-color: #c9d1d9;
+  --sigma-emphasis: #f0f6fc;
+  --sigma-secondary: #8b949e;
+  --sigma-border: #30363d;
+  --sigma-navbar-bg: #161b22;
+  --sigma-card-bg: rgba(22, 27, 34, 0.92);
+  --sigma-link: #58a6ff;
+  --sigma-link-hover: #79c0ff;
+  --sigma-primary: #30363d;
+  --sigma-primary-hover: #484f58;
+  --sigma-primary-border: #484f58;
+  --sigma-primary-border-hover: #6e7681;
+
+  --pf-v5-global--BackgroundColor--100: var(--sigma-body-bg);
+  --pf-v5-global--BackgroundColor--200: var(--sigma-navbar-bg);
+  --pf-v5-global--Color--100: var(--sigma-body-color);
+  --pf-v5-global--Color--200: var(--sigma-secondary);
+  --pf-v5-global--link--Color: var(--sigma-link);
+  --pf-v5-global--link--Color--hover: var(--sigma-link-hover);
+  --pf-v5-global--BorderColor--100: var(--sigma-border);
+  --pf-v5-global--BorderColor--200: var(--sigma-border);
+}
+
+html {
+  color-scheme: dark;
+}
+
+html.login-pf,
+html.login-pf body {
+  min-height: 100%;
+  background-color: var(--sigma-body-bg);
+  color: var(--sigma-body-color);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
+    Arial, sans-serif;
+}
+
+html.login-pf body {
+  position: relative;
+}
+
+html.login-pf body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 58, 0, 0.12), transparent 55%),
+    url("../img/sigma-mark.svg") center 38% / clamp(220px, 32vw, 320px) no-repeat;
+}
+
+html.login-pf .pf-v5-c-login {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+}
+
+html.login-pf .pf-v5-c-login__container {
+  max-width: 28rem;
+}
+
+html.login-pf #kc-header-wrapper.pf-v5-c-brand {
+  font-family: "Operation Napalm", system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  font-size: 1.15rem;
+  color: var(--sigma-emphasis);
+  text-align: center;
+}
+
+html.login-pf .pf-v5-c-login__header {
+  margin-bottom: 1.25rem;
+}
+
+html.login-pf .pf-v5-c-login__main {
+  background: var(--sigma-card-bg);
+  border: 1px solid var(--sigma-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+}
+
+html.login-pf .pf-v5-c-login__main-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html.login-pf #kc-page-title {
+  color: var(--sigma-emphasis);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+html.login-pf .pf-v5-c-form__label-text {
+  color: var(--sigma-secondary);
+  font-size: 0.875rem;
+}
+
+html.login-pf .pf-v5-c-form-control input {
+  background: #0d1117;
+  border-color: var(--sigma-border);
+  color: var(--sigma-emphasis);
+}
+
+html.login-pf .pf-v5-c-form-control input:focus {
+  border-color: var(--sigma-link);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+}
+
+html.login-pf .pf-v5-c-button.pf-m-primary {
+  background: var(--sigma-primary);
+  border-color: var(--sigma-primary-border);
+  color: var(--sigma-emphasis);
+  font-weight: 600;
+}
+
+html.login-pf .pf-v5-c-button.pf-m-primary:hover {
+  background: var(--sigma-primary-hover);
+  border-color: var(--sigma-primary-border-hover);
+  color: var(--sigma-emphasis);
+}
+
+html.login-pf .pf-v5-c-button.pf-m-control {
+  border-color: var(--sigma-border);
+  color: var(--sigma-secondary);
+}
+
+html.login-pf .pf-v5-c-alert {
+  border-radius: 0.5rem;
+}
+
+html.login-pf a {
+  color: var(--sigma-link);
+}
+
+html.login-pf a:hover {
+  color: var(--sigma-link-hover);
+}
+
+html.login-pf .sigma-register-link {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+html.login-pf .sigma-register-link a {
+  color: var(--sigma-link);
+  text-decoration: none;
+}
+
+html.login-pf .sigma-register-link a:hover {
+  color: var(--sigma-link-hover);
+  text-decoration: underline;
+}
+
+html.login-pf .pf-v5-c-login__main-body .instruction {
+  color: var(--sigma-secondary);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 575.98px) {
+  html.login-pf .pf-v5-c-login {
+    padding: 1.25rem 0.75rem 2rem;
+  }
+}
