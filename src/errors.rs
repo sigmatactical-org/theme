@@ -16,26 +16,37 @@ pub mod fallbacks {
 /// Render the themed 404 page, or a minimal fallback.
 #[must_use]
 pub fn not_found_html() -> String {
-    render_not_found_html().unwrap_or_else(|_| fallbacks::NOT_FOUND.to_string())
+    render_not_found_html().unwrap_or_else(|err| {
+        tracing::warn!(?err, "askama 404 render failed, using fallback");
+        fallbacks::NOT_FOUND.to_string()
+    })
 }
 
 /// Render the themed 500 page, or a minimal fallback.
 #[must_use]
 pub fn internal_server_error_html() -> String {
-    render_internal_server_error_html()
-        .unwrap_or_else(|_| fallbacks::INTERNAL_SERVER_ERROR.to_string())
+    render_internal_server_error_html().unwrap_or_else(|err| {
+        tracing::warn!(?err, "askama 500 render failed, using fallback");
+        fallbacks::INTERNAL_SERVER_ERROR.to_string()
+    })
 }
 
 /// Render the themed 403 page, or a minimal fallback.
 #[must_use]
 pub fn forbidden_html() -> String {
-    render_forbidden_html().unwrap_or_else(|_| fallbacks::FORBIDDEN.to_string())
+    render_forbidden_html().unwrap_or_else(|err| {
+        tracing::warn!(?err, "askama 403 render failed, using fallback");
+        fallbacks::FORBIDDEN.to_string()
+    })
 }
 
 /// Render the themed 405 page, or a minimal fallback.
 #[must_use]
 pub fn method_not_allowed_html() -> String {
-    render_method_not_allowed_html().unwrap_or_else(|_| fallbacks::METHOD_NOT_ALLOWED.to_string())
+    render_method_not_allowed_html().unwrap_or_else(|err| {
+        tracing::warn!(?err, "askama 405 render failed, using fallback");
+        fallbacks::METHOD_NOT_ALLOWED.to_string()
+    })
 }
 
 #[cfg(test)]
