@@ -723,3 +723,60 @@ main.app-main .hero-bg {
     min-width: 28rem;
   }
 }
+
+/* Sigma Sentry — health dashboard */
+.sentry-summary {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  margin: 1.5rem 0;
+}
+
+.sentry-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--bs-secondary-bg);
+}
+
+details.sentry-panel {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--bs-secondary-bg);
+}
+
+details.sentry-panel > summary {
+  cursor: pointer;
+  font-weight: 600;
+  list-style: disclosure-closed;
+}
+
+details.sentry-panel[open] > summary {
+  list-style: disclosure-open;
+  margin-bottom: 0.75rem;
+}
+
+.sentry-panel .detail-json {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  color: var(--bs-body-color);
+}
+
+.sentry-panel .checks-table th,
+.sentry-panel .events-table th {
+  color: var(--bs-secondary-color);
+  width: 8rem;
+}
+
+@media (max-width: 575.98px) {
+  .sentry-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
