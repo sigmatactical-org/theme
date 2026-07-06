@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use axum::{
     Router,
     body::Body,
@@ -5,10 +7,71 @@ use axum::{
     response::{Html, Response},
     routing::get,
 };
+use tower_http::catch_panic::{CatchPanicLayer, ResponseForPanic};
 use tower_http::set_header::SetResponseHeaderLayer;
 
 use crate::assets::{StaticAssets, cache_control, content_type};
+use crate::errors::{
+    forbidden_html, internal_server_error_html, method_not_allowed_html, not_found_html,
+};
 use crate::templates::render_index_html;
+
+fn html_response(status: StatusCode, body: String) -> Response {
+    Response::builder()
+        .status(status)
+        .header(header::CONTENT_TYPE, "text/html; charset=utf-8")
+        .body(Body::from(body))
+        .expect("valid response")
+}
+
+/// Themed 404 page for unmatched routes.
+pub async fn not_found() -> Response {
+    html_response(StatusCode::NOT_FOUND, not_found_html())
+}
+
+/// Themed 403 page for forbidden requests.
+pub async fn forbidden() -> Response {
+    html_response(StatusCode::FORBIDDEN, forbidden_html())
+}
+
+/// Themed 500 page for handler failures.
+pub async fn internal_server_error() -> Response {
+    internal_server_error_response()
+}
+
+fn internal_server_error_response() -> Response {
+    html_response(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        internal_server_error_html(),
+    )
+}
+
+/// Themed 405 page for disallowed HTTP methods.
+pub async fn method_not_allowed() -> Response {
+    html_response(
+        StatusCode::METHOD_NOT_ALLOWED,
+        method_not_allowed_html(),
+    )
+}
+
+/// Panic handler that returns the themed 500 page instead of an empty response.
+#[derive(Clone, Copy, Debug)]
+pub struct ThemedPanicResponse;
+
+impl ResponseForPanic for ThemedPanicResponse {
+    type ResponseBody = Body;
+
+    fn response_for_panic(
+        &mut self,
+        _err: Box<dyn Any + Send + 'static>,
+    ) -> Response<Self::ResponseBody> {
+        internal_server_error_response()
+    }
+}
+
+pub fn catch_panic_layer() -> CatchPanicLayer<ThemedPanicResponse> {
+    CatchPanicLayer::custom(ThemedPanicResponse)
+}
 
 async fn home_page() -> Result<Html<String>, StatusCode> {
     render_index_html()
@@ -50,6 +113,11 @@ pub fn router() -> Router {
         .route("/", get(home_page))
         .route("/static/{*path}", get(serve_static))
         .route("/favicon.ico", get(favicon))
+}
+
+/// Theme routes plus a fallback 404 handler for unmatched paths.
+pub fn router_with_fallback() -> Router {
+    router().fallback(not_found)
 }
 
 /// Same security headers used by the marketing site.
@@ -116,5 +184,23 @@ mod tests {
         let body = response.into_body().collect().await.unwrap().to_bytes();
         let html = std::str::from_utf8(&body).unwrap();
         assert!(html.contains("Sigma Tactical Group"));
+    }
+
+    #[tokio::test]
+    async fn fallback_renders_themed_404() {
+        let app = router_with_fallback();
+        let response = app
+            .oneshot(
+                axum::http::Request::builder()
+                    .uri("/does-not-exist")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::NOT_FOUND);
+        let body = response.into_body().collect().await.unwrap().to_bytes();
+        let html = std::str::from_utf8(&body).unwrap();
+        assert!(html.contains("Oops"));
     }
 }

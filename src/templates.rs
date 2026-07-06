@@ -20,6 +20,18 @@ pub struct InternalErrorTemplate {
     pub copyright_years: String,
 }
 
+#[derive(Template)]
+#[template(path = "error/403.html")]
+pub struct ForbiddenTemplate {
+    pub copyright_years: String,
+}
+
+#[derive(Template)]
+#[template(path = "error/405.html")]
+pub struct MethodNotAllowedTemplate {
+    pub copyright_years: String,
+}
+
 /// Renders the home page HTML.
 ///
 /// # Errors
@@ -56,6 +68,30 @@ pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
     .render()
 }
 
+/// Renders the 403 page HTML.
+///
+/// # Errors
+///
+/// Returns [`askama::Error`] when template rendering fails.
+pub fn render_forbidden_html() -> Result<String, askama::Error> {
+    ForbiddenTemplate {
+        copyright_years: copyright_years(),
+    }
+    .render()
+}
+
+/// Renders the 405 page HTML.
+///
+/// # Errors
+///
+/// Returns [`askama::Error`] when template rendering fails.
+pub fn render_method_not_allowed_html() -> Result<String, askama::Error> {
+    MethodNotAllowedTemplate {
+        copyright_years: copyright_years(),
+    }
+    .render()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -80,5 +116,9 @@ mod tests {
         assert!(html.contains("Oops"));
         let html = render_internal_server_error_html().expect("500 template");
         assert!(html.contains("Something went wrong"));
+        let html = render_forbidden_html().expect("403 template");
+        assert!(html.contains("Access denied"));
+        let html = render_method_not_allowed_html().expect("405 template");
+        assert!(html.contains("Method not allowed"));
     }
 }

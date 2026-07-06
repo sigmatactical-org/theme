@@ -7,6 +7,9 @@ mod copyright;
 mod assets;
 
 #[cfg(feature = "askama")]
+pub mod errors;
+
+#[cfg(feature = "askama")]
 pub mod templates;
 
 #[cfg(feature = "axum")]

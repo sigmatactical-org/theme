@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Copy sigma-theme Keycloak login assets into the platform Keycloak manifest tree.
-# Run from a monorepo checkout with theme/ and platform/ as siblings under sigma/.
+# Run from a monorepo checkout with theme/ and platform/ as siblings under it/.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

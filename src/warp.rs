@@ -4,9 +4,8 @@ use warp::http::StatusCode;
 use warp::{Filter, Rejection, Reply};
 
 use crate::assets::{StaticAssets, cache_control, content_type};
-use crate::templates::{
-    render_index_html, render_internal_server_error_html, render_not_found_html,
-};
+use crate::errors::{internal_server_error_html, method_not_allowed_html, not_found_html};
+use crate::templates::render_index_html;
 
 fn embedded_response(path: &str, data: Vec<u8>) -> warp::reply::Response {
     let mut resp = warp::reply::Response::new(data.into());
@@ -60,36 +59,24 @@ pub fn favicon() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Cl
         })
 }
 
-const FALLBACK_404: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Page not found</title><p>Not found.</p>";
-const FALLBACK_405: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Method not allowed — Sigma Tactical Group</title><p>That method isn’t allowed here.</p>";
-const FALLBACK_500: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Error</title><p>Internal Server Error.</p>";
-
-/// Warp rejection handler for themed 404/500 responses.
+/// Warp rejection handler for themed 404/405/500 responses.
 pub async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     if err.is_not_found() {
-        let reply = match render_not_found_html() {
-            Ok(body) => warp::reply::with_status(warp::reply::html(body), StatusCode::NOT_FOUND),
-            Err(_) => warp::reply::with_status(
-                warp::reply::html(String::from(FALLBACK_404)),
-                StatusCode::NOT_FOUND,
-            ),
-        };
-        return Ok(reply);
+        return Ok(warp::reply::with_status(
+            warp::reply::html(not_found_html()),
+            StatusCode::NOT_FOUND,
+        ));
     }
 
     if err.find::<warp::reject::MethodNotAllowed>().is_some() {
         return Ok(warp::reply::with_status(
-            warp::reply::html(String::from(FALLBACK_405)),
+            warp::reply::html(method_not_allowed_html()),
             StatusCode::METHOD_NOT_ALLOWED,
         ));
     }
 
-    let body = match render_internal_server_error_html() {
-        Ok(html) => html,
-        Err(_) => String::from(FALLBACK_500),
-    };
     Ok(warp::reply::with_status(
-        warp::reply::html(body),
+        warp::reply::html(internal_server_error_html()),
         StatusCode::INTERNAL_SERVER_ERROR,
     ))
 }
