@@ -105,7 +105,7 @@ mod tests {
         assert!(html.contains("/static/js/sigma-dial.js"));
         assert!(html.contains("/static/css/sigma-dial.css"));
         assert!(html.contains(&format!(
-            "&copy; {} Sigma Tactical Group",
+            "&copy; {} Sigma Tactical Group. All rights reserved.",
             copyright_years()
         )));
     }

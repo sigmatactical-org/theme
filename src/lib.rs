@@ -1,5 +1,8 @@
 //! Shared Sigma Tactical Group theme: copyright helpers, Askama templates, embedded
 //! static assets, and optional axum / warp route helpers.
+//!
+//! **Branding is proprietary** — see `BRANDING.md`. Source code is MIT/Apache-2.0;
+//! logos, wordmarks, and visual identity are not.
 
 mod copyright;
 
