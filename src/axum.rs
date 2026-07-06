@@ -48,10 +48,7 @@ fn internal_server_error_response() -> Response {
 
 /// Themed 405 page for disallowed HTTP methods.
 pub async fn method_not_allowed() -> Response {
-    html_response(
-        StatusCode::METHOD_NOT_ALLOWED,
-        method_not_allowed_html(),
-    )
+    html_response(StatusCode::METHOD_NOT_ALLOWED, method_not_allowed_html())
 }
 
 /// Panic handler that returns the themed 500 page instead of an empty response.

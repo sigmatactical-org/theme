@@ -35,8 +35,7 @@ pub fn forbidden_html() -> String {
 /// Render the themed 405 page, or a minimal fallback.
 #[must_use]
 pub fn method_not_allowed_html() -> String {
-    render_method_not_allowed_html()
-        .unwrap_or_else(|_| fallbacks::METHOD_NOT_ALLOWED.to_string())
+    render_method_not_allowed_html().unwrap_or_else(|_| fallbacks::METHOD_NOT_ALLOWED.to_string())
 }
 
 #[cfg(test)]
