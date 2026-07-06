@@ -1,2 +1,3 @@
 node_modules/
 assets/static/js/*.js
+assets/keycloak/sigma/login/resources/js/*.js

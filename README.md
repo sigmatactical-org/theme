@@ -42,7 +42,9 @@ Identity devcontainer mounts this directory into Keycloak at
 
 ## Frontend (TypeScript)
 
-Browser source is TypeScript only (`ts/src/`). esbuild writes gitignored bundles to `assets/static/js/` (required before `cargo build` because of `rust-embed`):
+Browser source is TypeScript only (`ts/src/`). esbuild writes gitignored bundles to
+`assets/static/js/` (site apps) and `assets/keycloak/sigma/login/resources/js/`
+(Keycloak login). Build before `cargo build` because of `rust-embed`:
 
 ```bash
 cd ts && npm ci && npm run check && npm run build
@@ -85,7 +87,7 @@ Repository: https://github.com/sigmatactical-org/sigma-theme
 
 ## Workspace
 
-This crate also lives in the `sigma/` Cargo workspace alongside `identity` and `sigmatacticalgroup.com` for local development.
+This crate lives under `it/theme/` in the `sigma/` monorepo alongside `it/identity`, `it/sigmatacticalgroup.com`, and the other IT service repos.
 
 ## License
 
