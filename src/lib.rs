@@ -5,6 +5,7 @@
 //! logos, wordmarks, and visual identity are not.
 
 mod copyright;
+mod security;
 
 #[cfg(feature = "embed")]
 mod assets;
@@ -25,6 +26,7 @@ pub mod axum;
 pub mod warp;
 
 pub use copyright::{COPYRIGHT_START_YEAR, copyright_years, current_year};
+pub use security::{CSP_ALTCHA, public_html_csp, public_html_csp_production};
 
 /// Absolute path to on-disk static assets (for local dev / Docker COPY workflows).
 #[must_use]

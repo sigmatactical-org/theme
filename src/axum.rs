@@ -137,7 +137,7 @@ pub fn security_headers(router: Router) -> Router {
             HeaderValue::from_static(
                 "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; \
                  img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; \
-                 connect-src 'self'; form-action 'self'",
+                 worker-src 'self' blob: data:; connect-src 'self'; form-action 'self'",
             ),
         ))
 }
