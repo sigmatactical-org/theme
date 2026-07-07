@@ -78,10 +78,7 @@ impl SiteHeader {
     }
 
     #[must_use]
-    pub fn with_breadcrumbs(
-        mut self,
-        crumbs: impl IntoIterator<Item = Breadcrumb>,
-    ) -> Self {
+    pub fn with_breadcrumbs(mut self, crumbs: impl IntoIterator<Item = Breadcrumb>) -> Self {
         self.breadcrumbs.extend(crumbs);
         self
     }
