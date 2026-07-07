@@ -1,0 +1,11 @@
+{# Proof-of-work human check (ALTCHA). Load /static/vendor/altcha/altcha.js once per page. #}
+{% if human_check_enabled %}
+<div class="human-check-shell mb-3" aria-live="polite">
+  <altcha-widget
+    challengeurl="{{ human_check_challenge_url|safe }}"
+    auto="onsubmit"
+    hidefooter
+    hidelogo
+  ></altcha-widget>
+</div>
+{% endif %}

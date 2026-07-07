@@ -1,35 +1,54 @@
 use askama::Template;
 
 use crate::copyright_years;
+use crate::nav::SiteHeader;
+
+fn default_site_header() -> SiteHeader {
+    SiteHeader::home()
+}
 
 #[derive(Template)]
 #[template(path = "index.html")]
 pub struct IndexTemplate {
+    pub site_header: SiteHeader,
+    pub site_nav: String,
     pub copyright_years: String,
 }
 
 #[derive(Template)]
 #[template(path = "error/404.html")]
 pub struct NotFoundTemplate {
+    pub site_header: SiteHeader,
+    pub site_nav: String,
     pub copyright_years: String,
 }
 
 #[derive(Template)]
 #[template(path = "error/500.html")]
 pub struct InternalErrorTemplate {
+    pub site_header: SiteHeader,
+    pub site_nav: String,
     pub copyright_years: String,
 }
 
 #[derive(Template)]
 #[template(path = "error/403.html")]
 pub struct ForbiddenTemplate {
+    pub site_header: SiteHeader,
+    pub site_nav: String,
     pub copyright_years: String,
 }
 
 #[derive(Template)]
 #[template(path = "error/405.html")]
 pub struct MethodNotAllowedTemplate {
+    pub site_header: SiteHeader,
+    pub site_nav: String,
     pub copyright_years: String,
+}
+
+fn error_fields() -> (SiteHeader, String, String) {
+    (default_site_header(), String::new(), copyright_years())
 }
 
 /// Renders the home page HTML.
@@ -39,6 +58,8 @@ pub struct MethodNotAllowedTemplate {
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_index_html() -> Result<String, askama::Error> {
     IndexTemplate {
+        site_header: default_site_header(),
+        site_nav: String::new(),
         copyright_years: copyright_years(),
     }
     .render()
@@ -50,8 +71,11 @@ pub fn render_index_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_not_found_html() -> Result<String, askama::Error> {
+    let (site_header, site_nav, copyright_years) = error_fields();
     NotFoundTemplate {
-        copyright_years: copyright_years(),
+        site_header,
+        site_nav,
+        copyright_years,
     }
     .render()
 }
@@ -62,8 +86,11 @@ pub fn render_not_found_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
+    let (site_header, site_nav, copyright_years) = error_fields();
     InternalErrorTemplate {
-        copyright_years: copyright_years(),
+        site_header,
+        site_nav,
+        copyright_years,
     }
     .render()
 }
@@ -74,8 +101,11 @@ pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_forbidden_html() -> Result<String, askama::Error> {
+    let (site_header, site_nav, copyright_years) = error_fields();
     ForbiddenTemplate {
-        copyright_years: copyright_years(),
+        site_header,
+        site_nav,
+        copyright_years,
     }
     .render()
 }
@@ -86,8 +116,11 @@ pub fn render_forbidden_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_method_not_allowed_html() -> Result<String, askama::Error> {
+    let (site_header, site_nav, copyright_years) = error_fields();
     MethodNotAllowedTemplate {
-        copyright_years: copyright_years(),
+        site_header,
+        site_nav,
+        copyright_years,
     }
     .render()
 }

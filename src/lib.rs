@@ -13,6 +13,9 @@ mod assets;
 pub mod errors;
 
 #[cfg(feature = "askama")]
+pub mod nav;
+
+#[cfg(feature = "askama")]
 pub mod templates;
 
 #[cfg(feature = "axum")]
