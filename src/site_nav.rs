@@ -91,14 +91,9 @@ mod tests {
     #[test]
     fn site_nav_includes_auth_cart_and_contact() {
         let links = auth_links("http://identity.example", "http://store.example", "/");
-        let contact = contact_us_url(
-            "http://contact.example",
-            "http://store.example",
-            "/",
-        );
-        let html =
-            render_site_nav(&links, &contact, "http://cart.example/", 2, true, true, "")
-                .expect("render");
+        let contact = contact_us_url("http://contact.example", "http://store.example", "/");
+        let html = render_site_nav(&links, &contact, "http://cart.example/", 2, true, true, "")
+            .expect("render");
         assert!(html.contains("store-nav-auth"));
         assert!(html.contains("href=\"http://cart.example/\""));
         assert!(html.contains("Contact us"));
@@ -107,15 +102,18 @@ mod tests {
 
     #[test]
     fn site_nav_can_hide_contact_us() {
-        let links = auth_links("http://identity.example", "http://contact.example", "/contact");
+        let links = auth_links(
+            "http://identity.example",
+            "http://contact.example",
+            "/contact",
+        );
         let contact = contact_us_url(
             "http://contact.example",
             "http://contact.example",
             "/contact",
         );
-        let html =
-            render_site_nav(&links, &contact, "http://cart.example/", 0, true, false, "")
-                .expect("render");
+        let html = render_site_nav(&links, &contact, "http://cart.example/", 0, true, false, "")
+            .expect("render");
         assert!(html.contains("store-nav-auth"));
         assert!(!html.contains("Contact us"));
     }
@@ -123,14 +121,9 @@ mod tests {
     #[test]
     fn site_nav_can_hide_cart() {
         let links = auth_links("http://identity.example", "http://store.example", "/");
-        let contact = contact_us_url(
-            "http://contact.example",
-            "http://store.example",
-            "/",
-        );
-        let html =
-            render_site_nav(&links, &contact, "http://cart.example/", 2, false, true, "")
-                .expect("render");
+        let contact = contact_us_url("http://contact.example", "http://store.example", "/");
+        let html = render_site_nav(&links, &contact, "http://cart.example/", 2, false, true, "")
+            .expect("render");
         assert!(html.contains("store-nav-auth"));
         assert!(!html.contains("href=\"http://cart.example/\""));
         assert!(!html.contains(">2</span>"));
