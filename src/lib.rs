@@ -16,6 +16,9 @@ pub mod errors;
 #[cfg(feature = "askama")]
 pub mod nav;
 
+#[cfg(feature = "site-nav")]
+pub mod site_nav;
+
 #[cfg(feature = "askama")]
 pub mod templates;
 

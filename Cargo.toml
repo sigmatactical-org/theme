@@ -10,13 +10,21 @@ publish = false
 
 [features]
 default = ["askama", "axum", "warp"]
-askama = ["dep:askama"]
+askama = ["dep:askama", "site-nav"]
+site-nav = [
+    "dep:sigma-cart-nav",
+    "dep:sigma-contact-nav",
+    "dep:sigma-identity-nav",
+]
 axum = ["dep:axum", "dep:bytes", "dep:tower-http", "embed"]
 warp = ["dep:warp", "embed"]
 embed = ["dep:rust-embed", "dep:mime_guess"]
 
 [dependencies]
 askama = { version = "0.16.0", optional = true }
+sigma-cart-nav = { git = "https://github.com/sigmatactical-org/cart.git", optional = true }
+sigma-contact-nav = { git = "https://github.com/sigmatactical-org/contact.git", optional = true }
+sigma-identity-nav = { git = "https://github.com/sigmatactical-org/identity.git", package = "sigma-identity-nav", optional = true }
 axum = { version = "0.8.1", optional = true }
 bytes = { version = "1.11", optional = true }
 mime_guess = { version = "2.0", optional = true }

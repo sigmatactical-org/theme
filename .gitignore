@@ -1,4 +1,5 @@
 node_modules/
+.cargo/
 assets/static/js/*.js
 assets/keycloak/sigma/login/resources/js/*.js
 /target

@@ -615,6 +615,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "sigma-cart-nav"
+version = "0.1.0"
+dependencies = [
+ "askama",
+]
+
+[[package]]
+name = "sigma-contact-nav"
+version = "0.1.0"
+dependencies = [
+ "askama",
+]
+
+[[package]]
+name = "sigma-identity-nav"
+version = "0.1.0"
+dependencies = [
+ "askama",
+]
+
+[[package]]
 name = "sigma-theme"
 version = "0.1.0"
 dependencies = [
@@ -624,6 +645,9 @@ dependencies = [
  "http-body-util",
  "mime_guess",
  "rust-embed",
+ "sigma-cart-nav",
+ "sigma-contact-nav",
+ "sigma-identity-nav",
  "tokio",
  "tower",
  "tower-http",

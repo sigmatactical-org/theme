@@ -3,8 +3,8 @@
 //!
 //! Each web service builds a [`SiteHeader`] for the current page (brand,
 //! optional breadcrumb trail, optional menu label) and passes it with the
-//! rendered identity-nav action widgets (`site_nav` in templates) when
-//! extending the theme base layout.
+//! rendered site action widgets ([`crate::site_nav`]) when extending the theme
+//! base layout.
 
 /// One segment of the navbar breadcrumb trail (labels only — hrefs are not shown).
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
