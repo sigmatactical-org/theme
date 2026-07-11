@@ -145,9 +145,9 @@ dependencies = [
 
 [[package]]
 name = "bytes"
-version = "1.12.0"
+version = "1.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ae3f5d315924270530207e2a68396c3cc547f6dca3fbdca317cfb1a51edb593"
+checksum = "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04"
 
 [[package]]
 name = "cfg-if"
@@ -617,6 +617,7 @@ dependencies = [
 [[package]]
 name = "sigma-cart-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/cart.git#804a49c0c3cf053b0e4d8f3387885d30464f2d10"
 dependencies = [
  "askama",
 ]
@@ -624,6 +625,7 @@ dependencies = [
 [[package]]
 name = "sigma-contact-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/contact.git#38ec6ec158aed7d1ced9531e7a7b3015b30c76c6"
 dependencies = [
  "askama",
 ]
@@ -631,6 +633,7 @@ dependencies = [
 [[package]]
 name = "sigma-identity-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/identity.git#f0f886ea75a7fd551a2062a7fa2648a24cda919d"
 dependencies = [
  "askama",
 ]
