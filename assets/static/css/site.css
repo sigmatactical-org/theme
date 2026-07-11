@@ -346,6 +346,131 @@ main.home-main .page-foreground {
   margin-bottom: 0.75rem;
 }
 
+/* sigma-tactical.com property directory */
+.site-directory-shell {
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: auto;
+  padding: 0 1rem 3rem;
+}
+
+.site-directory-layer {
+  width: min(44rem, 100%);
+  margin-inline: auto;
+  padding: 2.75rem 0 1rem;
+  text-align: left;
+}
+
+.site-directory-header {
+  margin-bottom: 1.75rem;
+}
+
+.site-directory-header h1 {
+  margin-bottom: 0.4rem;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+.site-directory-lead {
+  color: var(--bs-secondary-color);
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.site-directory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.site-directory-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid #30363d;
+  border-left: 3px solid #c9a962;
+  border-radius: 0.35rem;
+  background: #161b22;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.site-directory-card:hover,
+.site-directory-card:focus-visible {
+  background: #1c2128;
+  border-color: #484f58;
+  border-left-color: #e3c57a;
+  color: inherit;
+  outline: none;
+}
+
+.site-directory-name {
+  display: block;
+  font-family: "Operation Napalm", system-ui, sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: #f0f6fc;
+}
+
+.site-directory-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.site-directory-desc {
+  display: block;
+  color: #c9d1d9;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.site-directory-url {
+  display: block;
+  font-size: 0.85rem;
+  font-family: var(--sigma-mono, ui-monospace, Menlo, Consolas, monospace);
+  color: #c9a962;
+  word-break: break-all;
+}
+
+.site-directory-card--quiet {
+  border-left-color: #484f58;
+  background: transparent;
+  opacity: 0.55;
+}
+
+.site-directory-card--quiet:hover,
+.site-directory-card--quiet:focus-visible {
+  opacity: 0.85;
+  background: rgba(22, 27, 34, 0.65);
+  border-left-color: #6e7681;
+}
+
+.site-directory-card--quiet .site-directory-name {
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8b949e;
+}
+
+.site-directory-card--quiet .site-directory-desc,
+.site-directory-card--quiet .site-directory-url {
+  font-size: 0.82rem;
+  color: #8b949e;
+}
+
 /* Identity app pages (/register, /exampleapp) — external CSS only (CSP blocks inline). */
 main.app-main {
   padding: 2rem 0 3rem;
