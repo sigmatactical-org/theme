@@ -104,12 +104,19 @@ async fn favicon() -> Result<Response, StatusCode> {
         .expect("valid response"))
 }
 
-/// Theme routes: home page, `/static/*`, and `/favicon.ico`.
-pub fn router() -> Router {
+/// Theme routes without the generic home page: `/static/*` and `/favicon.ico`.
+///
+/// Use this instead of [`router`] when the service provides its own themed
+/// landing page at `/` (avoids an axum route conflict on `GET /`).
+pub fn asset_router() -> Router {
     Router::new()
-        .route("/", get(home_page))
         .route("/static/{*path}", get(serve_static))
         .route("/favicon.ico", get(favicon))
+}
+
+/// Theme routes: home page, `/static/*`, and `/favicon.ico`.
+pub fn router() -> Router {
+    asset_router().route("/", get(home_page))
 }
 
 /// Theme routes plus a fallback 404 handler for unmatched paths.
@@ -163,6 +170,21 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(response.status(), StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn asset_router_omits_home_page() {
+        let app = asset_router();
+        let response = app
+            .oneshot(
+                axum::http::Request::builder()
+                    .uri("/")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::NOT_FOUND);
     }
 
     #[tokio::test]
