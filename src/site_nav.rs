@@ -5,8 +5,10 @@
 
 use askama::Template;
 use sigma_cart_nav::render_cart_nav;
-use sigma_contact_nav::{contact_us_url, render_contact_nav};
-use sigma_identity_nav::{AuthLinks, auth_links, render_auth_nav};
+pub use sigma_contact_nav::contact_us_url;
+use sigma_contact_nav::render_contact_nav;
+use sigma_identity_nav::render_auth_nav;
+pub use sigma_identity_nav::{AuthLinks, auth_links};
 
 #[derive(Template)]
 #[template(path = "widgets/site_nav.html")]
