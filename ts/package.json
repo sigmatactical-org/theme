@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:vendor && npm run build:dial && npm run build:password-toggle && npm run build:register-success && npm run build:store-nav-auth && npm run build:product-order && npm run build:contact-form-auth && npm run build:register-link && npm run build:address-select",
+    "build": "npm run build:vendor && npm run build:dial && npm run build:password-toggle && npm run build:register-success && npm run build:store-nav-auth && npm run build:product-order && npm run build:contact-form-auth && npm run build:register-link && npm run build:address-select && npm run build:payment-method-form",
     "build:vendor": "mkdir -p ../assets/static/vendor/altcha && cp node_modules/altcha/dist/main/altcha.min.js ../assets/static/vendor/altcha/altcha.js && cp node_modules/altcha/dist/external/altcha.css ../assets/static/vendor/altcha/altcha.css",
     "build:dial": "esbuild src/index.ts --bundle --outfile=../assets/static/js/sigma-dial.js --platform=browser --target=es2022",
     "build:password-toggle": "esbuild src/password-toggle.ts --bundle --outfile=../assets/static/js/password-toggle.js --platform=browser --target=es2022",
@@ -13,6 +13,7 @@
     "build:contact-form-auth": "esbuild src/contact-form-auth.ts --bundle --outfile=../assets/static/js/contact-form-auth.js --platform=browser --target=es2022",
     "build:register-link": "esbuild src/register-link.ts --bundle --outfile=../assets/keycloak/sigma/login/resources/js/register-link.js --platform=browser --target=es2022",
     "build:address-select": "esbuild src/address-select.ts --bundle --outfile=../assets/static/js/address-select.js --platform=browser --target=es2022",
+    "build:payment-method-form": "esbuild src/payment-method-form.ts --bundle --outfile=../assets/static/js/payment-method-form.js --platform=browser --target=es2022",
     "check": "tsc --noEmit"
   },
   "devDependencies": {
