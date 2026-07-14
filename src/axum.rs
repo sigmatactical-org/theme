@@ -66,6 +66,7 @@ impl ResponseForPanic for ThemedPanicResponse {
     }
 }
 
+/// Panic-catching middleware that renders the themed 500 page.
 pub fn catch_panic_layer() -> CatchPanicLayer<ThemedPanicResponse> {
     CatchPanicLayer::custom(ThemedPanicResponse)
 }

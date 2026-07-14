@@ -3,21 +3,17 @@
 //! Each nav crate owns one affordance; this module stitches them together for
 //! `assets/templates/base.html`.
 
+mod app_site_nav;
+mod site_nav_template;
+pub use app_site_nav::AppSiteNav;
+pub(crate) use site_nav_template::SiteNavTemplate;
+
 use askama::Template;
 use sigma_cart_nav::render_cart_nav;
 pub use sigma_contact_nav::contact_us_url;
 use sigma_contact_nav::render_contact_nav;
 use sigma_identity_nav::render_auth_nav;
 pub use sigma_identity_nav::{AuthLinks, auth_links};
-
-#[derive(Template)]
-#[template(path = "widgets/site_nav.html")]
-struct SiteNavTemplate<'a> {
-    leading_html: &'a str,
-    auth_nav: &'a str,
-    cart_nav: &'a str,
-    contact_nav: &'a str,
-}
 
 /// Render the standard Sigma header actions: optional leading link, sign-in /
 /// welcome widget, optional cart icon, and optionally a contact-us button.
@@ -52,19 +48,6 @@ pub fn render_site_nav(
         contact_nav: &contact_nav,
     }
     .render()
-}
-
-/// Inputs for [`render_app_site_nav`].
-pub struct AppSiteNav<'a> {
-    pub identity_base: &'a str,
-    pub app_base: &'a str,
-    pub contact_base: &'a str,
-    pub cart_url: &'a str,
-    pub cart_count: u32,
-    pub return_path: &'a str,
-    pub show_cart: bool,
-    pub show_contact_us: bool,
-    pub leading_html: &'a str,
 }
 
 /// Convenience wrapper that builds per-service URLs and renders the header nav.

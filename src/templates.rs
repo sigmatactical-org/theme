@@ -1,3 +1,14 @@
+mod forbidden_template;
+mod index_template;
+mod internal_error_template;
+mod method_not_allowed_template;
+mod not_found_template;
+pub use forbidden_template::ForbiddenTemplate;
+pub use index_template::IndexTemplate;
+pub use internal_error_template::InternalErrorTemplate;
+pub use method_not_allowed_template::MethodNotAllowedTemplate;
+pub use not_found_template::NotFoundTemplate;
+
 use askama::Template;
 
 use crate::copyright_years;
@@ -5,46 +16,6 @@ use crate::nav::SiteHeader;
 
 fn default_site_header() -> SiteHeader {
     SiteHeader::home()
-}
-
-#[derive(Template)]
-#[template(path = "index.html")]
-pub struct IndexTemplate {
-    pub site_header: SiteHeader,
-    pub site_nav: String,
-    pub copyright_years: String,
-}
-
-#[derive(Template)]
-#[template(path = "error/404.html")]
-pub struct NotFoundTemplate {
-    pub site_header: SiteHeader,
-    pub site_nav: String,
-    pub copyright_years: String,
-}
-
-#[derive(Template)]
-#[template(path = "error/500.html")]
-pub struct InternalErrorTemplate {
-    pub site_header: SiteHeader,
-    pub site_nav: String,
-    pub copyright_years: String,
-}
-
-#[derive(Template)]
-#[template(path = "error/403.html")]
-pub struct ForbiddenTemplate {
-    pub site_header: SiteHeader,
-    pub site_nav: String,
-    pub copyright_years: String,
-}
-
-#[derive(Template)]
-#[template(path = "error/405.html")]
-pub struct MethodNotAllowedTemplate {
-    pub site_header: SiteHeader,
-    pub site_nav: String,
-    pub copyright_years: String,
 }
 
 fn error_fields() -> (SiteHeader, String, String) {

@@ -7,9 +7,13 @@ use crate::templates::{
 
 /// Minimal HTML used when Askama rendering fails.
 pub mod fallbacks {
+    /// Static themed 404 page.
     pub const NOT_FOUND: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Page not found</title><p>Not found.</p>";
+    /// Static themed 500 page.
     pub const INTERNAL_SERVER_ERROR: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Error</title><p>Internal Server Error.</p>";
+    /// Static themed 403 page.
     pub const FORBIDDEN: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Access denied</title><p>Forbidden.</p>";
+    /// Static themed 405 page.
     pub const METHOD_NOT_ALLOWED: &str = "<!DOCTYPE html><html lang=\"en\"><meta charset=\"utf-8\"><title>Method not allowed</title><p>Method not allowed.</p>";
 }
 
