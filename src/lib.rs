@@ -4,6 +4,8 @@
 //! **Brand and artwork are proprietary** — see `BRANDING.md`. Source code is MIT/Apache-2.0;
 //! logos, wordmarks, artwork, and visual identity are not.
 
+#![forbid(unsafe_code)]
+
 mod copyright;
 mod security;
 
