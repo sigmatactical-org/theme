@@ -3,26 +3,29 @@
 #[allow(unused_imports)]
 use super::*;
 
-/// Left side of the top bar: brand wordmark and optional breadcrumb trail.
+/// Left side of the top bar: the fixed Sigma Tactical Group brand, the
+/// left-aligned site menu, and the breadcrumb trail rendered in a bar under
+/// the navbar.
+///
+/// The brand icon and wordmark are fixed in `assets/templates/base.html` so
+/// they are identical on every site; services only choose the brand link
+/// target, the menu (usually [`site_menu`]) and the breadcrumbs.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct SiteHeader {
-    /// Wordmark next to the favicon (e.g. `Sigma Store`).
-    pub brand: String,
     /// Brand link target (usually `/`).
     pub brand_href: String,
-    /// Optional grey subtitle (legacy; prefer [`Self::breadcrumbs`]).
-    pub menu_label: String,
+    /// Left-aligned site menu entries (usually [`site_menu`]).
+    pub menu: Vec<MenuItem>,
     /// Where the user is within this service — earlier segments are links.
     pub breadcrumbs: Vec<Breadcrumb>,
 }
 impl SiteHeader {
-    /// Minimal header: brand wordmark linking to `/`.
+    /// Minimal header: fixed brand linking to `/`, no menu, no breadcrumbs.
     #[must_use]
-    pub fn new(brand: impl Into<String>) -> Self {
+    pub fn new() -> Self {
         Self {
-            brand: brand.into(),
             brand_href: "/".into(),
-            menu_label: String::new(),
+            menu: Vec::new(),
             breadcrumbs: Vec::new(),
         }
     }
@@ -34,8 +37,8 @@ impl SiteHeader {
     }
 
     #[must_use]
-    pub fn with_menu_label(mut self, label: impl Into<String>) -> Self {
-        self.menu_label = label.into();
+    pub fn with_menu(mut self, menu: impl IntoIterator<Item = MenuItem>) -> Self {
+        self.menu.extend(menu);
         self
     }
 
@@ -51,9 +54,9 @@ impl SiteHeader {
         self
     }
 
-    /// Default marketing-site header.
+    /// Default header with the standard site menu and nothing highlighted.
     #[must_use]
     pub fn home() -> Self {
-        Self::new("Sigma Tactical Group")
+        Self::new().with_menu(site_menu(None))
     }
 }

@@ -19,24 +19,20 @@
         <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0 flex-wrap">
           <a class="navbar-brand" href="{{ site_header.brand_href|safe }}">
             <img src="/static/sigma-favicon-32.png" alt="" />
-            <span class="brand-wordmark">{{ site_header.brand|safe }}</span>
+            <span class="brand-wordmark">Sigma Tactical Group</span>
           </a>
-          {% if !site_header.breadcrumbs.is_empty() %}
-          <nav class="nav-breadcrumb" aria-label="You are here">
-            <ol class="nav-breadcrumb__list">
-              {% for crumb in site_header.breadcrumbs %}
-              <li class="nav-breadcrumb__item">
-                {% if !crumb.href.is_empty() %}
-                <a class="nav-breadcrumb__link" href="{{ crumb.href|safe }}">{{ crumb.label|safe }}</a>
-                {% else %}
-                <span class="nav-breadcrumb__current" aria-current="page">{{ crumb.label|safe }}</span>
-                {% endif %}
-              </li>
-              {% endfor %}
-            </ol>
-          </nav>
-          {% elif !site_header.menu_label.is_empty() %}
-          <span class="nav-menu-label text-secondary">{{ site_header.menu_label|safe }}</span>
+          {% if !site_header.menu.is_empty() %}
+          <ul class="navbar-nav site-menu">
+            {% for item in site_header.menu %}
+            <li class="nav-item">
+              {% if item.active %}
+              <a class="nav-link site-menu__link active" aria-current="page" href="{{ item.href|safe }}">{{ item.label|safe }}</a>
+              {% else %}
+              <a class="nav-link site-menu__link" href="{{ item.href|safe }}">{{ item.label|safe }}</a>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
           {% endif %}
         </div>
         <div class="d-flex align-items-center">
@@ -44,6 +40,26 @@
         </div>
       </div>
     </nav>
+
+    {% if !site_header.breadcrumbs.is_empty() %}
+    <div class="breadcrumb-bar">
+      <div class="container">
+        <nav class="nav-breadcrumb" aria-label="You are here">
+          <ol class="nav-breadcrumb__list">
+            {% for crumb in site_header.breadcrumbs %}
+            <li class="nav-breadcrumb__item">
+              {% if !crumb.href.is_empty() %}
+              <a class="nav-breadcrumb__link" href="{{ crumb.href|safe }}">{{ crumb.label|safe }}</a>
+              {% else %}
+              <span class="nav-breadcrumb__current" aria-current="page">{{ crumb.label|safe }}</span>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ol>
+        </nav>
+      </div>
+    </div>
+    {% endif %}
 
     <main class="{% block main_class %}{% endblock %}">
       <div class="page-bg" aria-hidden="true">
