@@ -25,7 +25,7 @@ mod tests {
 
     #[test]
     fn builder_sets_breadcrumbs() {
-        let header = SiteHeader::new().with_breadcrumbs([
+        let header = SiteHeader::new("Cart").with_breadcrumbs([
             Breadcrumb::link("http://store.example/", "Store"),
             Breadcrumb::current("Cart"),
         ]);
