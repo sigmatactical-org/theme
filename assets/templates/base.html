@@ -19,7 +19,7 @@
         <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0 flex-wrap">
           <a class="navbar-brand" href="{{ site_header.brand_href|safe }}">
             <img src="/static/sigma-favicon-32.png" alt="" />
-            <span class="brand-wordmark">Sigma Tactical Group</span>
+            <span class="brand-wordmark">{{ site_header.brand_label }}</span>
           </a>
           {% if !site_header.menu.is_empty() %}
           <ul class="navbar-nav site-menu">
