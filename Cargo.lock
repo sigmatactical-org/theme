@@ -671,6 +671,7 @@ dependencies = [
 [[package]]
 name = "sigma-cart-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/cart.git#861cc7edaf0075b03566038bcae50d54fe7ca207"
 dependencies = [
  "askama",
 ]
@@ -678,6 +679,7 @@ dependencies = [
 [[package]]
 name = "sigma-contact-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/contact.git#b676a7aca2163636167cbac487a9de01af01ec5a"
 dependencies = [
  "askama",
 ]
@@ -685,6 +687,7 @@ dependencies = [
 [[package]]
 name = "sigma-identity-nav"
 version = "0.1.0"
+source = "git+https://github.com/sigmatactical-org/identity.git#a54f566c3d9e1bf7a258d9b88c76b58453d25cd1"
 dependencies = [
  "askama",
 ]
@@ -750,9 +753,9 @@ checksum = "0bf256ce5efdfa370213c1dabab5935a12e49f2c58d15e9eac2870d3b4f27263"
 
 [[package]]
 name = "tokio"
-version = "1.52.3"
+version = "1.53.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8fc7f01b389ac15039e4dc9531aa973a135d7a4135281b12d7c1bc79fd57fffe"
+checksum = "d988bcd52dbe076d3d46903332f58c912b87a2c49b1428419a5845154762ffee"
 dependencies = [
  "bytes",
  "libc",
