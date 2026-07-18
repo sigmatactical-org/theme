@@ -17,7 +17,7 @@
     "check": "tsc --noEmit"
   },
   "devDependencies": {
-    "altcha": "^3.1.0",
+    "altcha": "^3.2.1",
     "esbuild": "^0.28.1",
     "typescript": "^7.0.2"
   }
