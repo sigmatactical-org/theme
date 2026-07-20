@@ -1,8 +1,5 @@
 //! [`MenuItem`].
 
-#[allow(unused_imports)]
-use super::*;
-
 /// One entry in the left-aligned site menu (e.g. `Store`).
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct MenuItem {

@@ -1,10 +1,8 @@
 mod forbidden_template;
-mod index_template;
 mod internal_error_template;
 mod method_not_allowed_template;
 mod not_found_template;
 pub use forbidden_template::ForbiddenTemplate;
-pub use index_template::IndexTemplate;
 pub use internal_error_template::InternalErrorTemplate;
 pub use method_not_allowed_template::MethodNotAllowedTemplate;
 pub use not_found_template::NotFoundTemplate;
@@ -14,26 +12,12 @@ use askama::Template;
 use crate::copyright_years;
 use crate::nav::SiteHeader;
 
-fn default_site_header() -> SiteHeader {
-    SiteHeader::home()
-}
-
-fn error_fields() -> (SiteHeader, String, String) {
-    (default_site_header(), String::new(), copyright_years())
-}
-
-/// Renders the home page HTML.
-///
-/// # Errors
-///
-/// Returns [`askama::Error`] when template rendering fails.
-pub fn render_index_html() -> Result<String, askama::Error> {
-    IndexTemplate {
-        site_header: default_site_header(),
-        site_nav: String::new(),
-        copyright_years: copyright_years(),
-    }
-    .render()
+/// Builds an error-page template with the default header/nav/footer fields
+/// (all four error templates share the same shape) and renders it.
+fn render_error_page<T: Template>(
+    template: impl FnOnce(SiteHeader, String, String) -> T,
+) -> Result<String, askama::Error> {
+    template(SiteHeader::home(), String::new(), copyright_years()).render()
 }
 
 /// Renders the 404 page HTML.
@@ -42,13 +26,11 @@ pub fn render_index_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_not_found_html() -> Result<String, askama::Error> {
-    let (site_header, site_nav, copyright_years) = error_fields();
-    NotFoundTemplate {
+    render_error_page(|site_header, site_nav, copyright_years| NotFoundTemplate {
         site_header,
         site_nav,
         copyright_years,
-    }
-    .render()
+    })
 }
 
 /// Renders the 500 page HTML.
@@ -57,13 +39,11 @@ pub fn render_not_found_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
-    let (site_header, site_nav, copyright_years) = error_fields();
-    InternalErrorTemplate {
+    render_error_page(|site_header, site_nav, copyright_years| InternalErrorTemplate {
         site_header,
         site_nav,
         copyright_years,
-    }
-    .render()
+    })
 }
 
 /// Renders the 403 page HTML.
@@ -72,13 +52,11 @@ pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_forbidden_html() -> Result<String, askama::Error> {
-    let (site_header, site_nav, copyright_years) = error_fields();
-    ForbiddenTemplate {
+    render_error_page(|site_header, site_nav, copyright_years| ForbiddenTemplate {
         site_header,
         site_nav,
         copyright_years,
-    }
-    .render()
+    })
 }
 
 /// Renders the 405 page HTML.
@@ -87,32 +65,18 @@ pub fn render_forbidden_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_method_not_allowed_html() -> Result<String, askama::Error> {
-    let (site_header, site_nav, copyright_years) = error_fields();
-    MethodNotAllowedTemplate {
-        site_header,
-        site_nav,
-        copyright_years,
-    }
-    .render()
+    render_error_page(
+        |site_header, site_nav, copyright_years| MethodNotAllowedTemplate {
+            site_header,
+            site_nav,
+            copyright_years,
+        },
+    )
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::copyright_years;
-
-    #[test]
-    fn rendered_html_contains_title_and_assets() {
-        let html = render_index_html().expect("template should render");
-        assert!(html.contains("<title>Sigma Tactical Group</title>"));
-        assert!(html.contains("sigma-dial-root"));
-        assert!(html.contains("/static/js/sigma-dial.js"));
-        assert!(html.contains("/static/css/sigma-dial.css"));
-        assert!(html.contains(&format!(
-            "&copy; {} Sigma Tactical Group. All rights reserved.",
-            copyright_years()
-        )));
-    }
 
     #[test]
     fn error_templates_render() {
@@ -124,5 +88,13 @@ mod tests {
         assert!(html.contains("Access denied"));
         let html = render_method_not_allowed_html().expect("405 template");
         assert!(html.contains("Method not allowed"));
+    }
+
+    #[test]
+    fn internal_error_template_renders_html() {
+        let html = render_internal_server_error_html().expect("500 template");
+        assert!(html.contains("Something went wrong"));
+        assert!(html.contains("Oops"));
+        assert!(html.contains("<title>Something went wrong — Sigma Tactical Group</title>"));
     }
 }

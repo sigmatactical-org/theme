@@ -4,8 +4,10 @@
 //! `assets/templates/base.html`.
 
 mod app_site_nav;
+mod site_chrome;
 mod site_nav_template;
 pub use app_site_nav::AppSiteNav;
+pub use site_chrome::SiteChrome;
 pub(crate) use site_nav_template::SiteNavTemplate;
 
 use askama::Template;

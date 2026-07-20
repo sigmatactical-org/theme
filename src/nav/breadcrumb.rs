@@ -1,8 +1,5 @@
 //! [`Breadcrumb`].
 
-#[allow(unused_imports)]
-use super::*;
-
 /// One segment of the navbar breadcrumb trail (labels only — hrefs are not shown).
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Breadcrumb {

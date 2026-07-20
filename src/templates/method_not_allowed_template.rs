@@ -1,7 +1,5 @@
 //! [`MethodNotAllowedTemplate`].
 
-#[allow(unused_imports)]
-use super::*;
 use crate::nav::SiteHeader;
 use askama::Template;
 

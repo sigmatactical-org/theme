@@ -1,8 +1,7 @@
-use rust_embed::Embed;
+//! Embedded static assets plus the header values used when serving them.
 
-#[derive(Embed)]
-#[folder = "assets/static/"]
-pub(crate) struct StaticAssets;
+mod static_assets;
+pub(crate) use static_assets::StaticAssets;
 
 #[must_use]
 pub(crate) fn cache_control(path: &str) -> &'static str {

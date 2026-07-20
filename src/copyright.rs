@@ -35,7 +35,6 @@ pub fn copyright_years() -> String {
     if current > COPYRIGHT_START_YEAR {
         format!("{COPYRIGHT_START_YEAR}\u{2013}{current}")
     } else {
-        // Avoid heap allocation for the common single-year case.
         COPYRIGHT_START_YEAR.to_string()
     }
 }

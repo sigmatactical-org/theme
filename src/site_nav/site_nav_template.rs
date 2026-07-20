@@ -1,7 +1,5 @@
 //! [`SiteNavTemplate`].
 
-#[allow(unused_imports)]
-use super::*;
 use askama::Template;
 
 #[derive(Template)]

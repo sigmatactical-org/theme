@@ -1,9 +1,6 @@
 //! [`AppSiteNav`].
 
-#[allow(unused_imports)]
-use super::*;
-
-/// Inputs for [`render_app_site_nav`].
+/// Inputs for [`super::render_app_site_nav`].
 pub struct AppSiteNav<'a> {
     pub identity_base: &'a str,
     pub app_base: &'a str,

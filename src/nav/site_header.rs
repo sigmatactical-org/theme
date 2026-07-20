@@ -1,7 +1,6 @@
 //! [`SiteHeader`].
 
-#[allow(unused_imports)]
-use super::*;
+use super::{Breadcrumb, MenuItem, site_menu};
 
 /// Left side of the top bar: the fixed sigma symbol with the current area's
 /// wordmark, the left-aligned site menu, and the breadcrumb trail rendered

@@ -12,6 +12,12 @@ mod security;
 #[cfg(feature = "embed")]
 mod assets;
 
+#[cfg(feature = "cache")]
+pub mod cache;
+
+#[cfg(feature = "content")]
+pub mod content;
+
 #[cfg(feature = "askama")]
 pub mod errors;
 
@@ -31,10 +37,7 @@ pub mod axum;
 pub mod warp;
 
 pub use copyright::{COPYRIGHT_START_YEAR, copyright_years, current_year};
-pub use security::{CSP_ALTCHA, public_html_csp, public_html_csp_production};
-
-/// Absolute path to on-disk static assets (for local dev / Docker COPY workflows).
-#[must_use]
-pub fn static_dir() -> std::path::PathBuf {
-    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("assets/static")
-}
+pub use security::{
+    CSP_ALTCHA, CspOptions, SECURITY_HEADERS, public_html_csp, public_html_csp_production,
+    public_html_csp_with,
+};
