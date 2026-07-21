@@ -15,34 +15,56 @@ fn service_url(var: &str, default: &str) -> String {
     url
 }
 
-/// Store / Orders / Updates link targets, resolved from the environment once
-/// per process and cached (services set the `SIGMA_*_PUBLIC_URL` variables at
-/// startup and never change them afterwards).
-fn service_urls() -> &'static [String; 3] {
-    static URLS: OnceLock<[String; 3]> = OnceLock::new();
+/// Cross-site link targets, resolved from the environment once per process and
+/// cached (services set the `SIGMA_*_PUBLIC_URL` variables at startup and never
+/// change them afterwards).
+fn service_urls() -> &'static [String; 8] {
+    static URLS: OnceLock<[String; 8]> = OnceLock::new();
     URLS.get_or_init(|| {
         [
             service_url("SIGMA_STORE_PUBLIC_URL", "http://127.0.0.1:8082/"),
             service_url("SIGMA_ORDERS_PUBLIC_URL", "http://127.0.0.1:8085/"),
             service_url("SIGMA_UPDATES_PUBLIC_URL", "http://127.0.0.1:8080/"),
+            service_url("SIGMA_SIGMATACTICAL_ORG_PUBLIC_URL", "http://127.0.0.1:8080/"),
+            service_url("SIGMA_IDENTITY_PUBLIC_URL", "http://127.0.0.1:3000/"),
+            service_url("SIGMA_SENTRY_PUBLIC_URL", "http://127.0.0.1:8080/"),
+            service_url("SIGMA_CONTACT_PUBLIC_URL", "http://127.0.0.1:8083/"),
+            service_url("SIGMA_SIGMATACTICALGROUP_COM_PUBLIC_URL", "http://127.0.0.1:8080/"),
         ]
     })
 }
 
 /// Standard cross-site menu shown left-aligned in the navbar on every Sigma
-/// site: Store, Orders, Updates.
+/// site: Store, Orders, a Resources dropdown and an About dropdown.
 ///
-/// Link targets come from `SIGMA_STORE_PUBLIC_URL`, `SIGMA_ORDERS_PUBLIC_URL`
-/// and `SIGMA_UPDATES_PUBLIC_URL`, falling back to the local development
-/// ports. `active` highlights the entry for the site being viewed.
+/// Link targets come from the `SIGMA_*_PUBLIC_URL` variables, falling back to
+/// the local development ports. Resources groups Developer Zone
+/// (`sigmatactical.org`), Account (`identity`) and Updates; About groups
+/// Contact Us (`contact`), Corporate Affairs (`sigmatacticalgroup.com`) and
+/// Sentry. `active` highlights the top-level entry for the site being viewed.
 #[must_use]
 pub fn site_menu(active: Option<SiteMenuSection>) -> Vec<MenuItem> {
-    let [store, orders, updates] = service_urls();
+    let [store, orders, updates, sigmatactical_org, identity, sentry, contact, sigmatacticalgroup_com] =
+        service_urls();
     vec![
         MenuItem::link(store.clone(), "Store").with_active(active == Some(SiteMenuSection::Store)),
         MenuItem::link(orders.clone(), "Orders")
             .with_active(active == Some(SiteMenuSection::Orders)),
-        MenuItem::link(updates.clone(), "Updates")
-            .with_active(active == Some(SiteMenuSection::Updates)),
+        MenuItem::dropdown(
+            "Resources",
+            [
+                MenuItem::link(sigmatactical_org.clone(), "Developer Zone"),
+                MenuItem::link(identity.clone(), "Account"),
+                MenuItem::link(updates.clone(), "Updates"),
+            ],
+        ),
+        MenuItem::dropdown(
+            "About",
+            [
+                MenuItem::link(contact.clone(), "Contact Us"),
+                MenuItem::link(sigmatacticalgroup_com.clone(), "Corporate Affairs"),
+                MenuItem::link(sentry.clone(), "Sentry"),
+            ],
+        ),
     ]
 }

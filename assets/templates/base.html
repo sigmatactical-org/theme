@@ -24,6 +24,7 @@
           {% if !site_header.menu.is_empty() %}
           <ul class="navbar-nav site-menu">
             {% for item in site_header.menu %}
+            {% if item.children.is_empty() %}
             <li class="nav-item">
               {% if item.active %}
               <a class="nav-link site-menu__link active" aria-current="page" href="{{ item.href|safe }}">{{ item.label|safe }}</a>
@@ -31,6 +32,18 @@
               <a class="nav-link site-menu__link" href="{{ item.href|safe }}">{{ item.label|safe }}</a>
               {% endif %}
             </li>
+            {% else %}
+            <li class="nav-item site-menu__dropdown">
+              <button type="button" class="nav-link site-menu__link site-menu__toggle" aria-haspopup="true" aria-expanded="false">{{ item.label|safe }}</button>
+              <ul class="site-menu__submenu">
+                {% for child in item.children %}
+                <li>
+                  <a class="site-menu__sublink" href="{{ child.href|safe }}">{{ child.label|safe }}</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% endif %}
             {% endfor %}
           </ul>
           {% endif %}
