@@ -90,7 +90,10 @@ fn security_header_map(options: &CspOptions) -> HeaderMap {
         HeaderValue::from_str(&public_html_csp_with(options)).expect("valid CSP header value"),
     );
     for (name, value) in SECURITY_HEADERS {
-        map.insert(HeaderName::from_static(name), HeaderValue::from_static(value));
+        map.insert(
+            HeaderName::from_static(name),
+            HeaderValue::from_static(value),
+        );
     }
     map
 }

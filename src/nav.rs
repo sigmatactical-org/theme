@@ -74,7 +74,12 @@ mod tests {
             .map(|child| child.label.as_str())
             .collect();
         assert_eq!(child_labels, ["Developer Zone", "Account", "Updates"]);
-        assert!(resources.children.iter().all(|child| child.href.ends_with('/')));
+        assert!(
+            resources
+                .children
+                .iter()
+                .all(|child| child.href.ends_with('/'))
+        );
     }
 
     #[test]

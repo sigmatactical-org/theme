@@ -39,11 +39,13 @@ pub fn render_not_found_html() -> Result<String, askama::Error> {
 ///
 /// Returns [`askama::Error`] when template rendering fails.
 pub fn render_internal_server_error_html() -> Result<String, askama::Error> {
-    render_error_page(|site_header, site_nav, copyright_years| InternalErrorTemplate {
-        site_header,
-        site_nav,
-        copyright_years,
-    })
+    render_error_page(
+        |site_header, site_nav, copyright_years| InternalErrorTemplate {
+            site_header,
+            site_nav,
+            copyright_years,
+        },
+    )
 }
 
 /// Renders the 403 page HTML.

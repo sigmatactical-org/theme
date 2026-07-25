@@ -25,11 +25,17 @@ fn service_urls() -> &'static [String; 8] {
             service_url("SIGMA_STORE_PUBLIC_URL", "http://127.0.0.1:8082/"),
             service_url("SIGMA_ORDERS_PUBLIC_URL", "http://127.0.0.1:8085/"),
             service_url("SIGMA_UPDATES_PUBLIC_URL", "http://127.0.0.1:8080/"),
-            service_url("SIGMA_SIGMATACTICAL_ORG_PUBLIC_URL", "http://127.0.0.1:8080/"),
+            service_url(
+                "SIGMA_SIGMATACTICAL_ORG_PUBLIC_URL",
+                "http://127.0.0.1:8080/",
+            ),
             service_url("SIGMA_IDENTITY_PUBLIC_URL", "http://127.0.0.1:3000/"),
             service_url("SIGMA_SENTRY_PUBLIC_URL", "http://127.0.0.1:8080/"),
             service_url("SIGMA_CONTACT_PUBLIC_URL", "http://127.0.0.1:8083/"),
-            service_url("SIGMA_SIGMATACTICALGROUP_COM_PUBLIC_URL", "http://127.0.0.1:8080/"),
+            service_url(
+                "SIGMA_SIGMATACTICALGROUP_COM_PUBLIC_URL",
+                "http://127.0.0.1:8080/",
+            ),
         ]
     })
 }
@@ -44,8 +50,16 @@ fn service_urls() -> &'static [String; 8] {
 /// Sentry. `active` highlights the top-level entry for the site being viewed.
 #[must_use]
 pub fn site_menu(active: Option<SiteMenuSection>) -> Vec<MenuItem> {
-    let [store, orders, updates, sigmatactical_org, identity, sentry, contact, sigmatacticalgroup_com] =
-        service_urls();
+    let [
+        store,
+        orders,
+        updates,
+        sigmatactical_org,
+        identity,
+        sentry,
+        contact,
+        sigmatacticalgroup_com,
+    ] = service_urls();
     vec![
         MenuItem::link(store.clone(), "Store").with_active(active == Some(SiteMenuSection::Store)),
         MenuItem::link(orders.clone(), "Orders")
