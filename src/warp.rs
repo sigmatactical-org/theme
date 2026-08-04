@@ -91,6 +91,16 @@ where
 /// before serving — connecting a database pool, spawning a background poller —
 /// should build its own runtime and call [`serve`] directly.
 ///
+/// # Examples
+///
+/// ```no_run
+/// # fn main() -> std::io::Result<()> {
+/// use warp::Filter;
+/// let routes = warp::any().map(|| "ok");
+/// sigma_theme::warp::run_service("demo", routes)
+/// # }
+/// ```
+///
 /// # Errors
 ///
 /// Returns an error when the runtime cannot be built or the listener cannot
@@ -137,6 +147,14 @@ where
 /// Prefer [`internal_rejection`] where a filter chain can recover it via
 /// [`handle_rejection`]; use this at the leaves that already produce a concrete
 /// response.
+///
+/// # Examples
+///
+/// ```
+/// use warp::http::StatusCode;
+/// let resp = sigma_theme::warp::internal_error();
+/// assert_eq!(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
+/// ```
 #[must_use]
 pub fn internal_error() -> Response {
     warp::reply::with_status(
@@ -178,6 +196,15 @@ pub fn internal_rejection(context: &str, error: impl Display) -> Rejection {
 /// A `location` that is not a valid URI yields [`internal_error`]: the caller
 /// built it, so an invalid value is a bug in this service rather than
 /// something the client can correct.
+///
+/// # Examples
+///
+/// ```
+/// use warp::http::StatusCode;
+/// let resp = sigma_theme::warp::see_other("/admin/orders/42");
+/// assert_eq!(resp.status(), StatusCode::SEE_OTHER);
+/// assert_eq!(resp.headers().get("location").unwrap(), "/admin/orders/42");
+/// ```
 #[must_use]
 pub fn see_other(location: &str) -> Response {
     match location.parse::<warp::http::Uri>() {

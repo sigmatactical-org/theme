@@ -34,7 +34,9 @@ Rust apps extend `assets/templates/base.html` and load `/static/css/site.css`.
 Override `{% block nav_actions %}` in the navbar when an app needs auth controls
 (store).
 
-## Keycloak login theme
+## Integration notes
+
+### Keycloak login theme
 
 Source: `assets/keycloak/sigma/login/`. Sync into platform manifests after edits:
 
@@ -45,7 +47,7 @@ Source: `assets/keycloak/sigma/login/`. Sync into platform manifests after edits
 Identity devcontainer mounts this directory into Keycloak at
 `/opt/keycloak/themes/sigma/login`.
 
-## Frontend (TypeScript)
+### Frontend (TypeScript)
 
 Browser source is TypeScript only (`ts/src/`). esbuild writes bundles to
 `assets/static/js/` (site apps) and `assets/keycloak/sigma/login/resources/js/`
@@ -82,7 +84,7 @@ Router::new().merge(sigma_theme::axum::router());
 sigma_theme::warp::routes();
 ```
 
-## Depend on this crate
+### Depend on this crate
 
 Declare it as a git dependency pinned to an exact revision:
 
@@ -114,7 +116,7 @@ direct dependents only, which is why the `links = "sigma-theme"` key exists in
 
 Repository: https://github.com/sigmatactical-org/sigma-theme
 
-## Workspace
+## Development
 
 This crate lives under `it/theme/` in the `sigma/` monorepo alongside `it/identity`, `it/sigmatacticalgroup.com`, and the other IT service repos.
 

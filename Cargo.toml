@@ -47,11 +47,11 @@ embed = ["dep:rust-embed", "dep:mime_guess"]
 
 [dependencies]
 askama = { version = "0.16.0", optional = true }
-sigma-cart-nav = { git = "https://github.com/sigmatactical-org/cart.git", rev = "90ae62fc08dd29acba6d16197101aa4a7949b233", optional = true }
-sigma-contact-nav = { git = "https://github.com/sigmatactical-org/contact.git", rev = "6363260994cf04c228311f4663879505de82e196", optional = true }
-sigma-identity-nav = { git = "https://github.com/sigmatactical-org/identity.git", rev = "96ec046cefde7c0bb7ed4c8c991d7eedba7f7d7d", package = "sigma-identity-nav", optional = true }
+sigma-cart-nav = { git = "https://github.com/sigmatactical-org/cart.git", rev = "c56f32184c53410b5e9121b527d168ec60e10f3b", optional = true }
+sigma-contact-nav = { git = "https://github.com/sigmatactical-org/contact.git", rev = "877a1a5fdf4cf87721298159c5050d2205d35f47", optional = true }
+sigma-identity-nav = { git = "https://github.com/sigmatactical-org/identity.git", rev = "46fefdb6507caa13fdb347e36952fee1ce4cd0d8", package = "sigma-identity-nav", optional = true }
 axum = { version = "0.8.9", optional = true }
-futures-util = { version = "0.3.31", optional = true, default-features = false, features = ["std"] }
+futures-util = { version = "0.3.32", optional = true, default-features = false, features = ["std"] }
 mime_guess = { version = "2.0.5", optional = true }
 pulldown-cmark = { version = "0.13.4", optional = true, default-features = false, features = ["html"] }
 reqwest = { version = "0.13.4", optional = true, default-features = false, features = ["json", "rustls"] }
