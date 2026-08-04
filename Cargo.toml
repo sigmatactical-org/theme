@@ -9,6 +9,11 @@ authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-
 homepage = "https://sigmatactical.org"
 description = "Shared Sigma Tactical Group site chrome: assets, templates, and HTTP helpers"
 publish = false
+# Not a native library, but `links` is what makes build.rs metadata reach
+# dependents as DEP_SIGMA_THEME_*, which is how consumers locate the template
+# directory inside Cargo's git checkout. See build.rs.
+links = "sigma-theme"
+build = "build.rs"
 
 [features]
 default = ["askama"]
@@ -25,6 +30,7 @@ warp = [
     "dep:tokio",
     "tokio/macros",
     "tokio/net",
+    "tokio/rt-multi-thread",
     "tokio/signal",
     "askama",
     "embed",
@@ -41,9 +47,9 @@ embed = ["dep:rust-embed", "dep:mime_guess"]
 
 [dependencies]
 askama = { version = "0.16.0", optional = true }
-sigma-cart-nav = { git = "https://github.com/sigmatactical-org/cart.git", optional = true }
-sigma-contact-nav = { git = "https://github.com/sigmatactical-org/contact.git", optional = true }
-sigma-identity-nav = { git = "https://github.com/sigmatactical-org/identity.git", package = "sigma-identity-nav", optional = true }
+sigma-cart-nav = { git = "https://github.com/sigmatactical-org/cart.git", rev = "90ae62fc08dd29acba6d16197101aa4a7949b233", optional = true }
+sigma-contact-nav = { git = "https://github.com/sigmatactical-org/contact.git", rev = "6363260994cf04c228311f4663879505de82e196", optional = true }
+sigma-identity-nav = { git = "https://github.com/sigmatactical-org/identity.git", rev = "96ec046cefde7c0bb7ed4c8c991d7eedba7f7d7d", package = "sigma-identity-nav", optional = true }
 axum = { version = "0.8.9", optional = true }
 futures-util = { version = "0.3.31", optional = true, default-features = false, features = ["std"] }
 mime_guess = { version = "2.0.5", optional = true }

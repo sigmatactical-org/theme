@@ -35,7 +35,7 @@ jobs:
         with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
       - uses: Swatinem/rust-cache@v2
-      - run: cargo test --all-targets --features ${{ env.CARGO_FEATURES }} -- --test-threads=1
+      - run: cargo test --locked --all-targets --features ${{ env.CARGO_FEATURES }} -- --test-threads=1
 
   clippy:
     runs-on: ubuntu-latest
@@ -54,7 +54,29 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
           components: clippy
       - uses: Swatinem/rust-cache@v2
-      - run: cargo clippy --all-targets --features ${{ env.CARGO_FEATURES }} -- -D warnings
+      - run: cargo clippy --locked --all-targets --features ${{ env.CARGO_FEATURES }} -- -D warnings
+
+  bundles:
+    # Consumers depend on this crate over git and embed the built bundles, so
+    # they cannot run esbuild themselves: the output under assets/ is committed
+    # and has to match ts/src.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ts/package-lock.json
+      - name: Rebuild bundles from ts/src
+        working-directory: ts
+        run: npm ci && npm run build
+      - name: Committed bundles match ts/src
+        run: |
+          if ! git diff --exit-code --stat -- assets; then
+            echo "::error::Committed bundles are stale. Run 'npm run build' in ts/ and commit assets/." >&2
+            exit 1
+          fi
 
   fmt:
     runs-on: ubuntu-latest

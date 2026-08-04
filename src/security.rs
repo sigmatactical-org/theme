@@ -69,7 +69,10 @@ pub const SECURITY_HEADERS: &[(&str, &str)] = &[
     ("x-frame-options", "DENY"),
     ("referrer-policy", "strict-origin-when-cross-origin"),
     ("cross-origin-opener-policy", "same-origin"),
-    ("permissions-policy", "geolocation=(), microphone=(), camera=()"),
+    (
+        "permissions-policy",
+        "geolocation=(), microphone=(), camera=()",
+    ),
     (
         "strict-transport-security",
         "max-age=63072000; includeSubDomains; preload",

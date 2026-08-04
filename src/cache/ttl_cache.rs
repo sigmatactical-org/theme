@@ -183,7 +183,11 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(*value, 7);
-        assert_eq!(calls.load(Ordering::SeqCst), 1, "retry suppressed by backoff");
+        assert_eq!(
+            calls.load(Ordering::SeqCst),
+            1,
+            "retry suppressed by backoff"
+        );
     }
 
     #[tokio::test]

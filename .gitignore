@@ -1,5 +1,8 @@
 node_modules/
 .cargo/
-assets/static/js/*.js
-assets/keycloak/sigma/login/resources/js/*.js
 /target
+
+# The esbuild output under assets/static/js and assets/keycloak/.../js is
+# committed on purpose: consumers depend on this crate over git and compile the
+# bundles into their binary with rust-embed, so they cannot run npm first. CI
+# rebuilds from ts/src and fails if the committed output is stale.

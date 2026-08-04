@@ -85,7 +85,6 @@ pub fn asset_router() -> Router {
 ///
 /// `connect_src_extra` is appended to the CSP `connect-src` (e.g. the
 /// identity BFF origin); pass `""` when nothing beyond `'self'` is needed.
-#[must_use]
 pub fn security_headers(router: Router, connect_src_extra: &str) -> Router {
     let csp = public_html_csp_production(connect_src_extra, false);
     let mut router = router.layer(SetResponseHeaderLayer::if_not_present(

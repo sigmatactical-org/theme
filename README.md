@@ -21,7 +21,8 @@ assets/
   templates/    Askama base + pages (index, 404, 500)
   keycloak/     Keycloak login theme (sigma branding)
 ts/             TypeScript sources (authoritative)
-assets/static/js/  esbuild output (gitignored; build before cargo)
+assets/static/js/  esbuild output (committed; CI fails if stale vs ts/src)
+build.rs        publishes the template/asset paths to dependents (links metadata)
 src/
   copyright.rs  copyright_years()
   templates.rs  render_index_html(), error pages
@@ -46,9 +47,10 @@ Identity devcontainer mounts this directory into Keycloak at
 
 ## Frontend (TypeScript)
 
-Browser source is TypeScript only (`ts/src/`). esbuild writes gitignored bundles to
+Browser source is TypeScript only (`ts/src/`). esbuild writes bundles to
 `assets/static/js/` (site apps) and `assets/keycloak/sigma/login/resources/js/`
-(Keycloak login). Build before `cargo build` because of `rust-embed`:
+(Keycloak login). After editing anything under `ts/src/`, rebuild and commit the
+output:
 
 ```bash
 cd ts && npm ci && npm run check && npm run build
@@ -56,6 +58,13 @@ cargo build -p sigma-theme   # or any dependent crate
 ```
 
 The served URL stays `/static/js/sigma-dial.js` — that is compiled output, not a source file in the repo.
+
+**The bundles are committed on purpose.** `rust-embed` compiles them into the
+binary, and consumers depend on this crate over git, where they cannot run npm
+first — an uncommitted bundle would simply be missing from their binary. The
+`bundles` CI job rebuilds from `ts/src` and fails if the committed output differs,
+so stale bundles are caught rather than shipped. esbuild's output is
+deterministic, so a clean rebuild produces no diff.
 
 ## Rust API
 
@@ -75,17 +84,33 @@ sigma_theme::warp::routes();
 
 ## Depend on this crate
 
-From GitHub (other repos / CI):
+Declare it as a git dependency pinned to an exact revision:
 
 ```toml
-sigma-theme = { git = "ssh://git@github.com/sigmatactical-org/sigma-theme.git" }
+sigma-theme = { git = "https://github.com/sigmatactical-org/sigma-theme.git", rev = "…" }
 ```
 
-Local monorepo checkout:
+`platform/scripts/pin-shared-revs.sh sigma-theme` sets that revision across every
+consumer at once, after this repo is pushed. To build a consumer against a local
+checkout of this crate instead, run the consumer's `scripts/prepare-local.sh`,
+which patches the dependency to whichever sibling checkout it finds; don't hand-
+edit the manifest to a `path`, because that form cannot be committed.
 
-```toml
-sigma-theme = { path = "../theme" }
+### Templates in dependents
+
+A consumer's pages extend `assets/templates/base.html`, which Askama resolves from
+the filesystem at compile time. That path is only knowable here — from git this
+crate lives in Cargo's checkout directory under a rev-specific hash — so `build.rs`
+publishes it as `links` metadata, and each consumer's own `build.rs` reads it:
+
+```rust
+let templates = std::env::var("DEP_SIGMA_THEME_TEMPLATES")?;
+// write askama.toml with dirs = ["templates", templates]
 ```
+
+`DEP_SIGMA_THEME_ASSETS` carries the `assets/` directory the same way. Both reach
+direct dependents only, which is why the `links = "sigma-theme"` key exists in
+`Cargo.toml` despite there being no native library.
 
 Repository: https://github.com/sigmatactical-org/sigma-theme
 

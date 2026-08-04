@@ -2,8 +2,8 @@
 //! security headers, shared route scaffold) plus themed asset and error
 //! filters.
 
-mod template_error;
-pub use template_error::TemplateError;
+mod internal_error;
+pub use internal_error::InternalError;
 
 use std::convert::Infallible;
 use std::fmt::Display;
@@ -12,6 +12,7 @@ use std::sync::OnceLock;
 
 use warp::http::header::{HeaderMap, HeaderName, HeaderValue};
 use warp::http::{StatusCode, header};
+use warp::reply::Response;
 use warp::{Filter, Rejection, Reply};
 
 use crate::assets::{StaticAssets, cache_control, content_type};
@@ -83,6 +84,111 @@ where
     Ok(())
 }
 
+/// Build the standard multi-threaded Tokio runtime and serve `routes` on the
+/// address from `PORT` until a shutdown signal arrives.
+///
+/// For services whose routes need no async setup. A service that must `await`
+/// before serving — connecting a database pool, spawning a background poller —
+/// should build its own runtime and call [`serve`] directly.
+///
+/// # Errors
+///
+/// Returns an error when the runtime cannot be built or the listener cannot
+/// bind `addr` (e.g. the port is already in use).
+pub fn run_service<F, R>(name: &str, routes: F) -> std::io::Result<()>
+where
+    F: Filter<Extract = (R,), Error = Infallible> + Clone + Send + Sync + 'static,
+    R: Reply,
+{
+    let addr = listen_addr_from_env();
+    tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()?
+        .block_on(serve(name, addr, routes))
+}
+
+/// Filter supplying a clone of `state` to each handler.
+///
+/// The shared-state idiom for warp: handlers take the state by value, so the
+/// filter hands out a clone per request. `T` is typically an `Arc<_>` or a
+/// cheaply cloneable store holding a connection pool.
+///
+/// # Examples
+///
+/// ```
+/// # use std::sync::Arc;
+/// # use warp::Filter;
+/// let store = Arc::new(vec!["a", "b"]);
+/// let route = warp::path("count")
+///     .and(sigma_theme::warp::with_state(store))
+///     .map(|store: Arc<Vec<&str>>| store.len().to_string());
+/// # let _ = route;
+/// ```
+pub fn with_state<T>(state: T) -> impl Filter<Extract = (T,), Error = Infallible> + Clone
+where
+    T: Clone + Send + Sync + 'static,
+{
+    warp::any().map(move || state.clone())
+}
+
+/// Themed 500 response, for handlers that return a [`Response`] directly
+/// rather than rejecting.
+///
+/// Prefer [`internal_rejection`] where a filter chain can recover it via
+/// [`handle_rejection`]; use this at the leaves that already produce a concrete
+/// response.
+#[must_use]
+pub fn internal_error() -> Response {
+    warp::reply::with_status(
+        warp::reply::html(internal_server_error_html()),
+        StatusCode::INTERNAL_SERVER_ERROR,
+    )
+    .into_response()
+}
+
+/// Log `error` against `context` and reject so [`handle_rejection`] answers
+/// with the themed 500 page.
+///
+/// The shorthand this replaces — `.map_err(|_| warp::reject::not_found())` on a
+/// failed query or render — tells the visitor the page does not exist and tells
+/// the operator nothing at all.
+///
+/// # Examples
+///
+/// ```no_run
+/// # use warp::Filter;
+/// # use sigma_theme::warp::internal_rejection;
+/// # async fn list_widgets() -> Result<Vec<String>, std::io::Error> { Ok(Vec::new()) }
+/// let route = warp::path("widgets").and(warp::get()).and_then(|| async {
+///     let widgets = list_widgets()
+///         .await
+///         .map_err(|e| internal_rejection("list widgets", e))?;
+///     Ok::<_, warp::Rejection>(warp::reply::json(&widgets))
+/// });
+/// # let _ = route;
+/// ```
+pub fn internal_rejection(context: &str, error: impl Display) -> Rejection {
+    tracing::error!("{context} failed: {error}");
+    warp::reject::custom(InternalError)
+}
+
+/// `303 See Other` redirect to `location`, the POST-redirect-GET response for
+/// form submissions.
+///
+/// A `location` that is not a valid URI yields [`internal_error`]: the caller
+/// built it, so an invalid value is a bug in this service rather than
+/// something the client can correct.
+#[must_use]
+pub fn see_other(location: &str) -> Response {
+    match location.parse::<warp::http::Uri>() {
+        Ok(uri) => warp::redirect::see_other(uri).into_response(),
+        Err(_) => {
+            tracing::error!(location, "refusing to redirect to an invalid URI");
+            internal_error()
+        }
+    }
+}
+
 fn security_header_map(options: &CspOptions) -> HeaderMap {
     let mut map = HeaderMap::new();
     map.insert(
@@ -90,7 +196,10 @@ fn security_header_map(options: &CspOptions) -> HeaderMap {
         HeaderValue::from_str(&public_html_csp_with(options)).expect("valid CSP header value"),
     );
     for (name, value) in SECURITY_HEADERS {
-        map.insert(HeaderName::from_static(name), HeaderValue::from_static(value));
+        map.insert(
+            HeaderName::from_static(name),
+            HeaderValue::from_static(value),
+        );
     }
     map
 }
@@ -183,7 +292,7 @@ where
         async move {
             match cached_page_body(cache, render) {
                 Ok(body) => Ok(warp::reply::html(body)),
-                Err(()) => Err(warp::reject::custom(TemplateError)),
+                Err(()) => Err(warp::reject::custom(InternalError)),
             }
         }
     })
@@ -356,7 +465,7 @@ mod tests {
 
     #[tokio::test]
     async fn handle_rejection_renders_500_for_non_not_found() {
-        let reply = handle_rejection(warp::reject::custom(TemplateError))
+        let reply = handle_rejection(warp::reject::custom(InternalError))
             .await
             .expect("recovery is infallible");
         let resp = Reply::into_response(reply);
@@ -392,5 +501,55 @@ mod tests {
     fn listen_addr_defaults_to_8080() {
         // PORT is not set in the test environment.
         assert_eq!(listen_addr_from_env().to_string(), "0.0.0.0:8080");
+    }
+
+    #[tokio::test]
+    async fn with_state_hands_each_request_its_own_clone() {
+        use std::sync::Arc;
+
+        let state = Arc::new("shared".to_string());
+        let route = warp::path("state")
+            .and(with_state(state.clone()))
+            .map(|value: Arc<String>| value.to_string());
+
+        let res = warp::test::request()
+            .method("GET")
+            .path("/state")
+            .reply(&route)
+            .await;
+        assert_eq!(res.status(), 200);
+        assert_eq!(std::str::from_utf8(res.body()).unwrap(), "shared");
+        // The filter kept its own clone, so the original is still usable.
+        assert_eq!(*state, "shared");
+    }
+
+    #[test]
+    fn internal_error_is_a_themed_500() {
+        let resp = internal_error();
+        assert_eq!(resp.status(), StatusCode::INTERNAL_SERVER_ERROR);
+    }
+
+    #[tokio::test]
+    async fn see_other_redirects_with_303_and_location() {
+        let route = warp::path("go").map(|| see_other("/admin/orders/42"));
+        let res = warp::test::request()
+            .method("POST")
+            .path("/go")
+            .reply(&route)
+            .await;
+        assert_eq!(res.status(), StatusCode::SEE_OTHER);
+        assert_eq!(res.headers().get("location").unwrap(), "/admin/orders/42");
+    }
+
+    #[tokio::test]
+    async fn see_other_with_an_invalid_location_is_a_500_not_a_panic() {
+        let route = warp::path("go").map(|| see_other("http://[invalid"));
+        let res = warp::test::request()
+            .method("POST")
+            .path("/go")
+            .reply(&route)
+            .await;
+        assert_eq!(res.status(), StatusCode::INTERNAL_SERVER_ERROR);
+        assert!(res.headers().get("location").is_none());
     }
 }
